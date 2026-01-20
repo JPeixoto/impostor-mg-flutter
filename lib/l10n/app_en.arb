@@ -1,0 +1,156 @@
+{
+  "lobbyTitle": "Lobby",
+  "waitingForPlayers": "Waiting for players...",
+  "enterPlayerName": "Enter player name",
+  "startGame": "Start Game",
+  "dailyWords": "Daily Words",
+  "dailyLimitReached": "Daily limit reached.",
+  "freeRoundsRemaining": "{count} free rounds remaining.",
+  "@freeRoundsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "premiumActive": "Premium Active. Unlimited words.",
+  "mrWhite": "Mr. White",
+  "mrWhiteDescription": "Adds an impostor who knows nothing",
+  "watchAd": "Watch ad (+4 rounds)",
+  "getUnlimited": "Get Unlimited",
+  "passThePhone": "Pass the phone to {name}",
+  "@passThePhone": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tapToReveal": "Tap to reveal role",
+  "youAre": "You are",
+  "civilian": "Civilian",
+  "spy": "Spy",
+  "secretWord": "Secret Word",
+  "unknown": "Unknown",
+  "doneNextPlayer": "Done, Next Player",
+  "timeLeft": "Time Left",
+  "timeToDiscuss": "Time to discuss",
+  "castYourVote": "Cast your vote",
+  "whosTheSpy": "Who is the Spy?",
+  "voteToEliminate": "Vote to eliminate",
+  "civilianWin": "Civilians Win!",
+  "spyWin": "Spy Wins!",
+  "playAgain": "Play Again",
+  "backToLobby": "Back to Lobby",
+  "theSpyWas": "The Spy was {name}",
+  "@theSpyWas": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mrWhiteWas": "Mr. White was {name}",
+  "@mrWhiteWas": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "wordWas": "The word was {word}",
+  "@wordWas": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "needMoreWords": "Need more words?",
+  "watchAdOrPass": "Watch a short ad to get +4 rounds or get the 24h pass for unlimited play.",
+  "notNow": "Not now",
+  "getPass": "Get Unlimited ({price})",
+  "@getPass": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "yourTurn": "Your Turn",
+  "itsNamesTurn": "It's {name}'s Turn",
+  "@itsNamesTurn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "passToName": "Pass to {name}",
+  "@passToName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "askQuestion": "Ask a question to another player.",
+  "dontLetOthersSee": "Don't let others see the screen!",
+  "askYesNoQuestion": "Ask a yes/no question",
+  "tapDoneWhenFinished": "Tap Done when finished",
+  "keepScreenHidden": "Keep the screen hidden",
+  "tapRevealWhenReady": "Tap \"Reveal Role\" when ready",
+  "iAmNameRevealRole": "I am {name}, Reveal Role",
+  "@iAmNameRevealRole": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "yourRole": "Your Role",
+  "youAreTheImpostor": "YOU ARE THE IMPOSTOR",
+  "youAreACitizen": "YOU ARE A CITIZEN",
+  "blendIn": "Blend In",
+  "impostorInstruction": "You don't know the secret word.\nListen carefully and fake it!",
+  "theSecretWord": "The Secret Word",
+  "dontBeTooObvious": "Don't be too obvious!",
+  "nextUp": "Next Up",
+  "passDeviceInstruction": "Pass the device to the next player",
+  "passDeviceInstruction": "Pass the device to the next player",
+  "gotIt": "Got it!",
+  "busted": "Busted!",
+  "innocent": "Innocent!",
+  "youCaughtTheImpostor": "You caught the Impostor!",
+  "youVotedOutInnocent": "You voted out an innocent citizen...",
+  "continueGame": "Continue",
+  "spyEvadedDetection": "The spy evaded detection.",
+  "hiddenThreatEliminated": "The hidden threat has been eliminated.",
+  "secretWordWas": "The secret word was",
+  "discussionRoom": "Discussion Room",
+  "votingBooth": "Voting Booth",
+  "discuss": "DISCUSS",
+  "vote": "VOTE",
+  "shareHints": "Share hints. Clock is ticking.",
+  "pickWhoToEliminate": "Pick who to eliminate",
+  "remaining": "remaining",
+  "tradeHints": "Trade hints, note every slip.",
+  "tapToVoteOut": "Tap to vote out",
+  "callAVote": "Call a vote",
+  "results": "Results",
+  "onboardingAppName": "IMPOSTOR PARTY",
+  "onboardingTagline": "Pass-and-play deception.",
+  "onboardingSkip": "Skip",
+  "onboardingSkipTutorial": "Skip tutorial",
+  "onboardingNext": "Next",
+  "onboardingStartGame": "Start Game",
+  "onboardingTitle1": "Welcome Agent",
+  "onboardingDesc1": "In a room full of civilians, someone is hiding a secret. Can you uncover the truth?",
+  "onboardingTitle2": "Civilian vs Impostor",
+  "onboardingDesc2": "Civilians share a secret word. The Impostor has a different one but must blend in.",
+  "onboardingTitle3": "Trust No One",
+  "onboardingDesc3": "Discuss, vote, and eliminate the Impostor before it's too late.",
+  "onboardingChip1": "Fast rounds",
+  "onboardingChip2": "Bluff & deduce",
+  "onboardingChip3": "Pass-and-play"
+}
