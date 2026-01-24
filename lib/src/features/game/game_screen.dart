@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/grid_background.dart';
+import '../../core/confirm_exit.dart';
 import '../../core/theme.dart';
 import '../../game_controller.dart';
 import '../../models/game_state.dart';
@@ -43,6 +44,14 @@ class _GameScreenState extends State<GameScreen> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          IconButton(
+            tooltip: loc.backToLobby,
+            icon: const Icon(Icons.close_rounded),
+            onPressed: () =>
+                confirmExitToLobby(context, onConfirm: controller.resetGame),
+          ),
+        ],
       ),
       body: GridBackground(
         child: SafeArea(
@@ -58,7 +67,7 @@ class _GameScreenState extends State<GameScreen> {
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     color: theme.cardTheme.color,
-                    borderRadius: BorderRadius.circular(32),
+                    borderRadius: AppTheme.cardRadius,
                     boxShadow: AppTheme.softShadows,
                   ),
                   child: Column(
@@ -83,7 +92,7 @@ class _GameScreenState extends State<GameScreen> {
                               isDiscussion
                                   ? loc.discuss.toUpperCase()
                                   : loc.vote.toUpperCase(),
-                              style: GoogleFonts.outfit(
+                              style: GoogleFonts.sora(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w900,
                                 letterSpacing: 1.5,
@@ -203,81 +212,97 @@ class _DiscussionTimer extends StatelessWidget {
     final loc = AppLocalizations.of(context)!;
     final progress = (timeLeft / 240).clamp(0.0, 1.0).toDouble();
 
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(32),
-        decoration: BoxDecoration(
-          color: theme.cardTheme.color,
-          borderRadius: BorderRadius.circular(32),
-          boxShadow: AppTheme.softShadows,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(
-              alignment: Alignment.center,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isCompact = constraints.maxHeight < 420;
+        final circleSize = isCompact ? 200.0 : 240.0;
+        final outerPadding = isCompact ? 24.0 : 32.0;
+        final gap = isCompact ? 20.0 : 32.0;
+        final timeSize = isCompact ? 52.0 : 64.0;
+        final hintPadding = EdgeInsets.symmetric(
+          horizontal: isCompact ? 20 : 24,
+          vertical: 16,
+        );
+
+        return Center(
+          child: Container(
+            padding: EdgeInsets.all(outerPadding),
+            decoration: BoxDecoration(
+              color: theme.cardTheme.color,
+              borderRadius: AppTheme.cardRadius,
+              boxShadow: AppTheme.softShadows,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 240,
-                  width: 240,
-                  child: CircularProgressIndicator(
-                    value: progress,
-                    strokeWidth: 16,
-                    backgroundColor: theme.dividerColor.withValues(alpha: 0.1),
-                    valueColor: AlwaysStoppedAnimation(
-                      timeLeft < 30
-                          ? theme.colorScheme.primary
-                          : theme.colorScheme.secondary,
-                    ),
-                    strokeCap: StrokeCap.round,
-                  ),
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
+                Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Text(
-                      formatTime(timeLeft),
-                      style: GoogleFonts.outfit(
-                        fontSize: 64,
-                        fontWeight: FontWeight.w900,
-                        color: theme.colorScheme.onSurface,
-                        letterSpacing: -2,
+                    SizedBox(
+                      height: circleSize,
+                      width: circleSize,
+                      child: CircularProgressIndicator(
+                        value: progress,
+                        strokeWidth: 16,
+                        backgroundColor: theme.dividerColor.withValues(
+                          alpha: 0.1,
+                        ),
+                        valueColor: AlwaysStoppedAnimation(
+                          timeLeft < 30
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.secondary,
+                        ),
+                        strokeCap: StrokeCap.round,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      loc.remaining.toUpperCase(),
-                      style: GoogleFonts.outfit(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: theme.hintColor,
-                        letterSpacing: 2,
-                      ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          formatTime(timeLeft),
+                          style: GoogleFonts.sora(
+                            fontSize: timeSize,
+                            fontWeight: FontWeight.w900,
+                            color: theme.colorScheme.onSurface,
+                            letterSpacing: -2,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          loc.remaining.toUpperCase(),
+                          style: GoogleFonts.sora(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: theme.hintColor,
+                            letterSpacing: 2,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
+                SizedBox(height: gap),
+                Container(
+                  padding: hintPadding,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.secondary.withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Text(
+                    loc.tradeHints,
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ],
             ),
-            const SizedBox(height: 32),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.secondary.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Text(
-                loc.tradeHints,
-                style: textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -304,90 +329,94 @@ class _VotingList extends StatelessWidget {
         final name = player.name;
         final initial = name.isNotEmpty ? name[0].toUpperCase() : '?';
 
-        return GestureDetector(
-          onTap: () => controller.eliminatePlayer(player),
-          child: Container(
-            decoration: BoxDecoration(
-              color: theme.cardTheme.color,
-              borderRadius: BorderRadius.circular(24),
-              boxShadow: AppTheme.softShadows,
-            ),
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Container(
-                  width: 56,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.secondary, // Black
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: Center(
-                    child: Text(
-                      initial,
-                      style: textTheme.titleLarge?.copyWith(
-                        color: Colors.white, // Always white on secondary
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+        return Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(24),
+            onTap: () => controller.eliminatePlayer(player),
+            child: Container(
+              decoration: BoxDecoration(
+                color: theme.cardTheme.color,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: AppTheme.softShadows,
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.secondary, // Black
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    child: Center(
+                      child: Text(
+                        initial,
+                        style: textTheme.titleLarge?.copyWith(
+                          color: Colors.white, // Always white on secondary
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: textTheme.titleMedium?.copyWith(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.onSurface,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: textTheme.titleMedium?.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onSurface,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        loc.tapToVoteOut,
-                        style: textTheme.bodySmall?.copyWith(
-                          color: theme.hintColor,
-                          fontWeight: FontWeight.w600,
+                        const SizedBox(height: 4),
+                        Text(
+                          loc.tapToVoteOut,
+                          style: textTheme.bodySmall?.copyWith(
+                            color: theme.hintColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppTheme.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.how_to_vote_rounded,
-                        color: AppTheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        loc.vote.toUpperCase(),
-                        style: GoogleFonts.outfit(
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.how_to_vote_rounded,
                           color: AppTheme.primary,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 1.2,
-                          fontSize: 12,
+                          size: 20,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        Text(
+                          loc.vote.toUpperCase(),
+                          style: GoogleFonts.sora(
+                            color: AppTheme.primary,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.2,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

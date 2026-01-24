@@ -6,6 +6,7 @@ import '../../core/theme.dart';
 import '../../game_controller.dart';
 import '../../monetization/monetization_controller.dart';
 import '../../features/settings/settings_controller.dart';
+import '../../features/settings/settings_screen.dart';
 
 class LobbyScreen extends StatefulWidget {
   const LobbyScreen({super.key});
@@ -71,18 +72,34 @@ class _LobbyScreenState extends State<LobbyScreen> {
     final monetization = context.watch<MonetizationController>();
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final hasValidSetup = controller.hasValidSetup;
+    final isDark = theme.brightness == Brightness.dark;
+    final keyboardOpen = MediaQuery.viewInsetsOf(context).bottom > 0;
+    const bottomBarHeight = 84.0;
 
     return Scaffold(
       resizeToAvoidBottomInset: true, // Handle keyboard properly
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        leading: IconButton(
+          tooltip: loc.settings,
+          icon: const Icon(Icons.settings_rounded),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) =>
+                    SettingsScreen(playerCount: controller.players.length),
+              ),
+            );
+          },
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
           loc.lobbyTitle.toUpperCase(),
           style: textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w900,
-            letterSpacing: 2,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 1,
           ),
         ),
         centerTitle: true,
@@ -112,96 +129,101 @@ class _LobbyScreenState extends State<LobbyScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
 
               // Top Section: Word Quota (Full Width)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: _WordPackStatusCard(monetization: monetization),
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
 
-              // Mr. White Toggle (Below Word Quota)
+              // Settings Summary
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        theme.cardTheme.color!,
-                        theme.colorScheme.primary.withValues(alpha: 0.05),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: theme.dividerColor.withValues(alpha: 0.1),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.psychology_rounded,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              loc.mrWhite,
-                              style: textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              loc.mrWhiteDescription,
-                              style: textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(14),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => SettingsScreen(
+                            playerCount: controller.players.length,
+                          ),
                         ),
+                      );
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: theme.cardTheme.color,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: theme.dividerColor.withValues(alpha: 0.1),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.04),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 8),
-                      Switch(
-                        value: controller.useMrWhite,
-                        onChanged: (val) {
-                          setState(() => controller.useMrWhite = val);
-                        },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.tune_rounded,
+                            color: theme.colorScheme.primary,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  loc.settingsTitle,
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  '${loc.impostorsShort}: ${controller.impostorCount} • '
+                                  '${loc.mrWhiteShort}: ${controller.mrWhiteCount}',
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.onSurfaceVariant,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Icon(
+                            Icons.chevron_right_rounded,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
 
-              // Expanded Player List Section (Takes Most of Screen)
+              // Player List Section
               Expanded(
-                flex: 10, // Much larger flex to dominate the screen
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: theme.cardTheme.color,
-                      borderRadius: BorderRadius.circular(32),
+                      borderRadius: AppTheme.cardRadius,
                       boxShadow: AppTheme.softShadows,
                       border: Border.all(
                         color: theme.dividerColor.withValues(alpha: 0.1),
@@ -210,24 +232,57 @@ class _LobbyScreenState extends State<LobbyScreen> {
                     child: Column(
                       children: [
                         // Players Header
-                        Text(
-                          "Players (${controller.players.length})",
-                          style: textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              loc.players,
+                              style: textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.secondary.withValues(
+                                  alpha: 0.12,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                '${controller.players.length}',
+                                style: textTheme.labelMedium?.copyWith(
+                                  color: theme.colorScheme.secondary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                            Icon(
+                              Icons.people_alt_rounded,
+                              color: theme.colorScheme.onSurfaceVariant,
+                              size: 18,
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 12),
 
                         // Scrollable Player List
                         Expanded(
                           child: controller.players.isEmpty
                               ? Center(
                                   child: Text(
-                                    loc.waitingForPlayers,
-                                    style: textTheme.titleMedium?.copyWith(
+                                    loc.needPlayersToStart(
+                                      controller.minPlayersRequired,
+                                    ),
+                                    style: textTheme.bodyMedium?.copyWith(
                                       color: theme.hintColor,
                                       fontStyle: FontStyle.italic,
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 )
                               : ListView.builder(
@@ -235,9 +290,20 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                   itemCount: controller.players.length,
                                   itemBuilder: (context, index) {
                                     final player = controller.players[index];
+                                    final listItemBg = isDark
+                                        ? theme.colorScheme.surface.withValues(
+                                            alpha: 0.85,
+                                          )
+                                        : theme.colorScheme.secondary
+                                              .withValues(alpha: 0.06);
+                                    final listItemBorder = isDark
+                                        ? theme.colorScheme.secondary
+                                              .withValues(alpha: 0.35)
+                                        : theme.colorScheme.secondary
+                                              .withValues(alpha: 0.14);
                                     return Padding(
                                       padding: const EdgeInsets.only(
-                                        bottom: 12,
+                                        bottom: 10,
                                       ),
                                       child: Dismissible(
                                         key: Key(player.id),
@@ -248,12 +314,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                         background: Container(
                                           alignment: Alignment.centerRight,
                                           padding: const EdgeInsets.only(
-                                            right: 20,
+                                            right: 18,
                                           ),
                                           decoration: BoxDecoration(
                                             color: AppTheme.error,
                                             borderRadius: BorderRadius.circular(
-                                              50,
+                                              18,
                                             ),
                                           ),
                                           child: const Icon(
@@ -263,39 +329,71 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                         ),
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                            vertical: 12,
+                                            horizontal: 14,
+                                            vertical: 10,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: theme.colorScheme.secondary,
+                                            color: listItemBg,
                                             borderRadius: BorderRadius.circular(
-                                              50,
+                                              18,
                                             ),
+                                            border: Border.all(
+                                              color: listItemBorder,
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withValues(
+                                                  alpha: isDark ? 0.22 : 0.08,
+                                                ),
+                                                blurRadius: 10,
+                                                offset: const Offset(0, 4),
+                                              ),
+                                            ],
                                           ),
                                           child: Row(
                                             children: [
                                               // Player Avatar Icon
                                               Container(
-                                                width: 40,
-                                                height: 40,
+                                                width: 34,
+                                                height: 34,
                                                 decoration: BoxDecoration(
-                                                  color: Colors.white
-                                                      .withValues(alpha: 0.2),
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [
+                                                      theme.colorScheme.primary
+                                                          .withValues(
+                                                            alpha: isDark
+                                                                ? 0.9
+                                                                : 0.85,
+                                                          ),
+                                                      theme
+                                                          .colorScheme
+                                                          .secondary
+                                                          .withValues(
+                                                            alpha: isDark
+                                                                ? 0.9
+                                                                : 0.85,
+                                                          ),
+                                                    ],
+                                                  ),
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: Icon(
                                                   _getAvatarIcon(index),
                                                   color: Colors.white,
-                                                  size: 24,
+                                                  size: 20,
                                                 ),
                                               ),
-                                              const SizedBox(width: 12),
+                                              const SizedBox(width: 10),
                                               Expanded(
                                                 child: Text(
                                                   player.name,
-                                                  style: textTheme.titleMedium
+                                                  style: textTheme.titleSmall
                                                       ?.copyWith(
-                                                        color: Colors.white,
+                                                        color: theme
+                                                            .colorScheme
+                                                            .onSurface,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
@@ -306,12 +404,17 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                                     .removePlayer(player.id),
                                                 child: Container(
                                                   padding: const EdgeInsets.all(
-                                                    4,
+                                                    6,
                                                   ),
-                                                  child: const Icon(
+                                                  child: Icon(
                                                     Icons.close_rounded,
-                                                    color: Colors.white,
-                                                    size: 20,
+                                                    color: theme
+                                                        .colorScheme
+                                                        .error
+                                                        .withValues(
+                                                          alpha: 0.75,
+                                                        ),
+                                                    size: 18,
                                                   ),
                                                 ),
                                               ),
@@ -324,64 +427,53 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                 ),
                         ),
 
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 12),
 
                         // Add Player Input (At bottom of player list)
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: theme.inputDecorationTheme.fillColor,
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(color: theme.dividerColor),
-                                ),
-                                child: TextField(
-                                  controller: _nameController,
-                                  style: textTheme.bodyLarge,
-                                  decoration: InputDecoration(
-                                    hintText: loc.enterPlayerName,
-                                    hintStyle: textTheme.bodyLarge?.copyWith(
-                                      color: theme.hintColor,
-                                    ),
-                                    border: InputBorder.none,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                      vertical: 16,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: theme.inputDecorationTheme.fillColor,
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(color: theme.dividerColor),
+                          ),
+                          child: TextField(
+                            controller: _nameController,
+                            style: textTheme.bodyMedium,
+                            decoration: InputDecoration(
+                              hintText: loc.enterPlayerName,
+                              hintStyle: textTheme.bodyMedium?.copyWith(
+                                color: theme.hintColor,
+                              ),
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: Material(
+                                  color: theme.primaryColor,
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(12),
+                                    onTap: _addPlayer,
+                                    child: SizedBox(
+                                      width: 36,
+                                      height: 36,
+                                      child: Icon(
+                                        Icons.add_rounded,
+                                        color: theme.colorScheme.onPrimary,
+                                        size: 20,
+                                      ),
                                     ),
                                   ),
-                                  textCapitalization: TextCapitalization.words,
-                                  onSubmitted: (_) => _addPlayer(),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 12),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: theme.primaryColor,
-                                borderRadius: BorderRadius.circular(16),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: theme.primaryColor.withValues(
-                                      alpha: 0.4,
-                                    ),
-                                    blurRadius: 12,
-                                    offset: const Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: IconButton(
-                                onPressed: _addPlayer,
-                                icon: Icon(
-                                  Icons.add_rounded,
-                                  color: theme.colorScheme.onPrimary,
-                                ),
-                                style: IconButton.styleFrom(
-                                  padding: const EdgeInsets.all(16),
-                                ),
-                              ),
-                            ),
-                          ],
+                            textCapitalization: TextCapitalization.words,
+                            textInputAction: TextInputAction.done,
+                            onSubmitted: (_) => _addPlayer(),
+                          ),
                         ),
                       ],
                     ),
@@ -389,63 +481,78 @@ class _LobbyScreenState extends State<LobbyScreen> {
                 ),
               ),
 
-              const SizedBox(height: 12),
-
-              // Fixed Bottom: Start Button Only
-              Container(
-                padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-                decoration: BoxDecoration(
-                  color: theme.cardTheme.color,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(32),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 20,
-                      offset: const Offset(0, -5),
-                    ),
-                  ],
-                  border: Border(
-                    top: BorderSide(
-                      color: theme.dividerColor.withValues(alpha: 0.1),
-                    ),
-                  ),
-                ),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: controller.players.length >= 3
-                        ? () => controller.startGame(context)
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.primaryColor,
-                      disabledBackgroundColor: theme.disabledColor.withValues(
-                        alpha: 0.1,
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      elevation: controller.players.length >= 3 ? 8 : 0,
-                      shadowColor: theme.primaryColor.withValues(alpha: 0.5),
-                    ),
-                    child: Text(
-                      loc.startGame,
-                      style: textTheme.titleMedium?.copyWith(
-                        color: controller.players.length >= 3
-                            ? theme.colorScheme.onPrimary
-                            : theme.disabledColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              const SizedBox(height: 8),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: keyboardOpen
+          ? null
+          : Container(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              decoration: BoxDecoration(
+                color: theme.cardTheme.color,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 16,
+                    offset: const Offset(0, -4),
+                  ),
+                ],
+                border: Border(
+                  top: BorderSide(
+                    color: theme.dividerColor.withValues(alpha: 0.1),
+                  ),
+                ),
+              ),
+              child: SizedBox(
+                height: bottomBarHeight - 28,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: hasValidSetup
+                      ? () {
+                          if (!monetization.canPlay) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(loc.dailyLimitReached)),
+                            );
+                            showModalBottomSheet<bool>(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (ctx) => const _UnlockWordsSheet(),
+                            );
+                            return;
+                          }
+                          controller.startGame(context);
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: theme.primaryColor,
+                    disabledBackgroundColor: theme.disabledColor.withValues(
+                      alpha: 0.1,
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: hasValidSetup ? 6 : 0,
+                    shadowColor: theme.primaryColor.withValues(alpha: 0.4),
+                  ),
+                  child: Text(
+                    loc.startGame,
+                    style: textTheme.titleSmall?.copyWith(
+                      color: hasValidSetup
+                          ? theme.colorScheme.onPrimary
+                          : theme.disabledColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
     );
   }
 }
@@ -460,9 +567,14 @@ class _WordPackStatusCard extends StatelessWidget {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final loc = AppLocalizations.of(context)!;
+    final isDark = theme.brightness == Brightness.dark;
 
     final quota = monetization.dailyQuota;
     final hasPass = monetization.hasActivePass;
+    final progress = hasPass ? 1.0 : (quota / 4).clamp(0.0, 1.0);
+    final progressColor = hasPass
+        ? theme.colorScheme.primary
+        : (quota > 0 ? theme.colorScheme.primary : theme.colorScheme.error);
 
     String statusText;
     if (hasPass) {
@@ -473,102 +585,172 @@ class _WordPackStatusCard extends StatelessWidget {
       statusText = loc.dailyLimitReached;
     }
 
-    return GestureDetector(
-      onTap: () {
-        showModalBottomSheet<bool>(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          builder: (ctx) => const _UnlockWordsSheet(),
-        );
-      },
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              theme.cardTheme.color!,
-              theme.colorScheme.secondary.withValues(alpha: 0.05),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: () {
+          showModalBottomSheet<bool>(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (ctx) => const _UnlockWordsSheet(),
+          );
+        },
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                theme.colorScheme.primary.withValues(
+                  alpha: isDark ? 0.18 : 0.12,
+                ),
+                theme.cardTheme.color!,
+                theme.colorScheme.secondary.withValues(
+                  alpha: isDark ? 0.18 : 0.08,
+                ),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: (hasPass ? theme.colorScheme.primary : theme.dividerColor)
+                  .withValues(alpha: 0.18),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.28 : 0.08),
+                blurRadius: 14,
+                offset: const Offset(0, 6),
+              ),
             ],
           ),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: theme.dividerColor.withValues(alpha: 0.1)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: theme.colorScheme.secondary.withValues(alpha: 0.15),
-              ),
-              child: Icon(
-                Icons.bolt_rounded,
-                color: theme.colorScheme.secondary,
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Text(
-                    loc.dailyWords,
-                    style: textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          theme.colorScheme.primary.withValues(
+                            alpha: isDark ? 0.9 : 0.85,
+                          ),
+                          theme.colorScheme.secondary.withValues(
+                            alpha: isDark ? 0.9 : 0.85,
+                          ),
+                        ],
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.bolt_rounded,
+                      color: Colors.white,
+                      size: 20,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          loc.dailyWords,
+                          style: textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          statusText,
+                          style: textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: hasPass
+                          ? theme.colorScheme.primary.withValues(alpha: 0.16)
+                          : (quota > 0
+                                ? theme.colorScheme.primary.withValues(
+                                    alpha: 0.14,
+                                  )
+                                : theme.colorScheme.error.withValues(
+                                    alpha: 0.14,
+                                  )),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: hasPass
+                            ? theme.colorScheme.primary.withValues(alpha: 0.3)
+                            : (quota > 0
+                                  ? theme.colorScheme.primary.withValues(
+                                      alpha: 0.3,
+                                    )
+                                  : theme.colorScheme.error.withValues(
+                                      alpha: 0.3,
+                                    )),
+                      ),
+                    ),
+                    child: Text(
+                      hasPass ? loc.premium : '$quota/4',
+                      style: textTheme.labelMedium?.copyWith(
+                        color: hasPass
+                            ? theme.colorScheme.primary
+                            : (quota > 0
+                                  ? theme.colorScheme.primary
+                                  : theme.colorScheme.error),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(999),
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        minHeight: 8,
+                        backgroundColor: theme.colorScheme.primary.withValues(
+                          alpha: 0.1,
+                        ),
+                        valueColor: AlwaysStoppedAnimation(progressColor),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
                   Text(
-                    statusText,
-                    style: textTheme.bodySmall?.copyWith(
+                    hasPass ? loc.unlimited : loc.roundsLeft,
+                    style: textTheme.labelSmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
               ),
-            ),
-            if (!hasPass)
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: quota > 0
-                      ? theme.colorScheme.primary.withValues(alpha: 0.15)
-                      : theme.colorScheme.error.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  '$quota/4',
-                  style: textTheme.labelMedium?.copyWith(
-                    color: quota > 0
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.error,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            if (hasPass)
-              Icon(
-                Icons.check_circle_rounded,
-                color: theme.colorScheme.primary,
-                size: 24,
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

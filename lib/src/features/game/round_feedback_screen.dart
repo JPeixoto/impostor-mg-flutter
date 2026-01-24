@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/grid_background.dart';
+import '../../core/confirm_exit.dart';
 import '../../core/theme.dart';
 import '../../game_controller.dart';
 import '../../models/role.dart';
@@ -14,6 +15,7 @@ class RoundFeedbackScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<GameController>();
     final eliminatedPlayer = controller.lastEliminatedPlayer;
+    final feedbackMessage = controller.lastEliminationMessage;
     final wasSpy =
         eliminatedPlayer?.role == Role.impostor ||
         eliminatedPlayer?.role == Role.mrWhite;
@@ -23,6 +25,18 @@ class RoundFeedbackScreen extends StatelessWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            tooltip: loc.backToLobby,
+            icon: const Icon(Icons.close_rounded),
+            onPressed: () =>
+                confirmExitToLobby(context, onConfirm: controller.resetGame),
+          ),
+        ],
+      ),
       body: GridBackground(
         child: SafeArea(
           child: Padding(
@@ -35,9 +49,12 @@ class RoundFeedbackScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(32),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(32),
+                    color: theme.cardTheme.color,
+                    borderRadius: AppTheme.cardRadius,
                     boxShadow: AppTheme.softShadows,
+                    border: Border.all(
+                      color: theme.dividerColor.withValues(alpha: 0.1),
+                    ),
                   ),
                   child: Column(
                     children: [
@@ -63,7 +80,7 @@ class RoundFeedbackScreen extends StatelessWidget {
                       Text(
                         wasSpy
                             ? loc.youCaughtTheImpostor
-                            : loc.youVotedOutInnocent,
+                            : (feedbackMessage ?? loc.youVotedOutInnocent),
                         style: textTheme.titleLarge?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                           height: 1.3,

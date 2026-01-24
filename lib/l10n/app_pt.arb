@@ -1,6 +1,46 @@
 {
   "lobbyTitle": "Lobby",
-  "waitingForPlayers": "À espera de jogadores...",
+  "players": "Jogadores",
+  "settings": "Definições",
+  "settingsComingSoon": "Definições em breve.",
+  "settingsTitle": "Definições do Jogo",
+  "impostorsLabel": "Impostores (sem palavra)",
+  "mrWhiteLabel": "Mr. White",
+  "impostorsShort": "Impostores",
+  "mrWhiteShort": "Mr White",
+  "minPlayersRule": "Precisa de pelo menos {count} civis.",
+  "@minPlayersRule": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "maxSpecialRoles": "Com {players} jogadores, máximo de papéis especiais: {count}.",
+  "@maxSpecialRoles": {
+    "placeholders": {
+      "players": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "invalidSetupWarning": "Adicione mais jogadores ou reduza os papéis especiais para começar.",
+  "done": "Concluir",
+  "needPlayersToStart": "Adicione pelo menos {count} jogadores para começar.",
+  "@needPlayersToStart": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cancel": "Cancelar",
+  "leaveGameTitle": "Voltar ao lobby?",
+  "leaveGameMessage": "Isto termina a ronda atual.",
+  "waitingForPlayers": "Adicione pelo menos 3 jogadores para começar.",
   "enterPlayerName": "Insira o nome",
   "startGame": "Iniciar Jogo",
   "dailyWords": "Palavras Diárias",
@@ -15,20 +55,23 @@
   "tapToReveal": "Toca para revelar",
   "youAre": "Tu és",
   "civilian": "Civil",
-  "spy": "Espião",
+  "spy": "Impostor",
   "secretWord": "Palavra Secreta",
   "unknown": "Desconhecido",
   "doneNextPlayer": "Feito, Próximo",
   "timeLeft": "Tempo Restante",
   "timeToDiscuss": "Tempo de discussão",
   "castYourVote": "Votem agora",
-  "whosTheSpy": "Quem é o Espião?",
+  "whosTheSpy": "Quem é o Impostor?",
   "voteToEliminate": "Votar para eliminar",
   "civilianWin": "Civis Ganham!",
-  "spyWin": "Espião Ganha!",
+  "spyWin": "Impostor Vence!",
   "playAgain": "Jogar Novamente",
   "backToLobby": "Voltar ao Lobby",
-  "theSpyWas": "O Espião era {name}",
+  "premium": "Premium",
+  "unlimited": "Ilimitado",
+  "roundsLeft": "Rondas restantes",
+  "theSpyWas": "O Impostor era {name}",
   "mrWhiteWas": "Mr. White era {name}",
   "wordWas": "A palavra era {word}",
   "needMoreWords": "Precisas de mais palavras?",
@@ -54,14 +97,13 @@
   "dontBeTooObvious": "Não seja muito óbvio!",
   "nextUp": "Próximo",
   "passDeviceInstruction": "Passe o dispositivo para o próximo jogador",
-  "passDeviceInstruction": "Passe o dispositivo para o próximo jogador",
   "gotIt": "Entendi!",
   "busted": "Apanhado!",
   "innocent": "Inocente!",
   "youCaughtTheImpostor": "Apanharam o Impostor!",
   "youVotedOutInnocent": "Expulsaram um cidadão inocente...",
   "continueGame": "Continuar",
-  "spyEvadedDetection": "O espião escapou à deteção.",
+  "spyEvadedDetection": "O impostor escapou à deteção.",
   "hiddenThreatEliminated": "A ameaça oculta foi eliminada.",
   "secretWordWas": "A palavra secreta era",
   "discussionRoom": "Sala de Discussão",
@@ -84,7 +126,7 @@
   "onboardingTitle1": "Bem-vindo Agente",
   "onboardingDesc1": "Numa sala cheia de civis, alguém esconde um segredo. Consegues descobrir a verdade?",
   "onboardingTitle2": "Civil vs Impostor",
-  "onboardingDesc2": "Os civis partilham uma palavra secreta. O Impostor tem uma diferente mas deve disfarçar-se.",
+  "onboardingDesc2": "Os civis partilham uma palavra secreta. O Impostor não a conhece. O Mr White não sabe nada e tem de blefar.",
   "onboardingTitle3": "Não Confies em Ninguém",
   "onboardingDesc3": "Discute, vota e elimina o Impostor antes que seja tarde demais.",
   "onboardingChip1": "Rondas rápidas",

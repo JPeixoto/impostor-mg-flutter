@@ -1,6 +1,46 @@
 {
   "lobbyTitle": "Lobby",
-  "waitingForPlayers": "Waiting for players...",
+  "players": "Players",
+  "settings": "Settings",
+  "settingsComingSoon": "Settings screen coming soon.",
+  "settingsTitle": "Game Settings",
+  "impostorsLabel": "Impostors (no word)",
+  "mrWhiteLabel": "Mr. White",
+  "impostorsShort": "Impostors",
+  "mrWhiteShort": "Mr White",
+  "minPlayersRule": "Need at least {count} civilians.",
+  "@minPlayersRule": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "maxSpecialRoles": "With {players} players, max special roles: {count}.",
+  "@maxSpecialRoles": {
+    "placeholders": {
+      "players": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "invalidSetupWarning": "Add more players or reduce special roles to start.",
+  "done": "Done",
+  "needPlayersToStart": "Add at least {count} players to start.",
+  "@needPlayersToStart": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cancel": "Cancel",
+  "leaveGameTitle": "Return to lobby?",
+  "leaveGameMessage": "This will end the current round.",
+  "waitingForPlayers": "Add at least 3 players to start.",
   "enterPlayerName": "Enter player name",
   "startGame": "Start Game",
   "dailyWords": "Daily Words",
@@ -29,20 +69,23 @@
   "tapToReveal": "Tap to reveal role",
   "youAre": "You are",
   "civilian": "Civilian",
-  "spy": "Spy",
+  "spy": "Impostor",
   "secretWord": "Secret Word",
   "unknown": "Unknown",
   "doneNextPlayer": "Done, Next Player",
   "timeLeft": "Time Left",
   "timeToDiscuss": "Time to discuss",
   "castYourVote": "Cast your vote",
-  "whosTheSpy": "Who is the Spy?",
+  "whosTheSpy": "Who's the Impostor?",
   "voteToEliminate": "Vote to eliminate",
   "civilianWin": "Civilians Win!",
-  "spyWin": "Spy Wins!",
+  "spyWin": "Impostor Wins!",
   "playAgain": "Play Again",
   "backToLobby": "Back to Lobby",
-  "theSpyWas": "The Spy was {name}",
+  "premium": "Premium",
+  "unlimited": "Unlimited",
+  "roundsLeft": "Rounds left",
+  "theSpyWas": "The Impostor was {name}",
   "@theSpyWas": {
     "placeholders": {
       "name": {
@@ -117,14 +160,13 @@
   "dontBeTooObvious": "Don't be too obvious!",
   "nextUp": "Next Up",
   "passDeviceInstruction": "Pass the device to the next player",
-  "passDeviceInstruction": "Pass the device to the next player",
   "gotIt": "Got it!",
   "busted": "Busted!",
   "innocent": "Innocent!",
   "youCaughtTheImpostor": "You caught the Impostor!",
   "youVotedOutInnocent": "You voted out an innocent citizen...",
   "continueGame": "Continue",
-  "spyEvadedDetection": "The spy evaded detection.",
+  "spyEvadedDetection": "The impostor evaded detection.",
   "hiddenThreatEliminated": "The hidden threat has been eliminated.",
   "secretWordWas": "The secret word was",
   "discussionRoom": "Discussion Room",
@@ -147,7 +189,7 @@
   "onboardingTitle1": "Welcome Agent",
   "onboardingDesc1": "In a room full of civilians, someone is hiding a secret. Can you uncover the truth?",
   "onboardingTitle2": "Civilian vs Impostor",
-  "onboardingDesc2": "Civilians share a secret word. The Impostor has a different one but must blend in.",
+  "onboardingDesc2": "Civilians share a secret word. The Impostor doesn't know it. Mr White knows nothing and must bluff.",
   "onboardingTitle3": "Trust No One",
   "onboardingDesc3": "Discuss, vote, and eliminate the Impostor before it's too late.",
   "onboardingChip1": "Fast rounds",

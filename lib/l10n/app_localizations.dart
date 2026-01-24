@@ -104,10 +104,106 @@ abstract class AppLocalizations {
   /// **'Lobby'**
   String get lobbyTitle;
 
+  /// No description provided for @players.
+  ///
+  /// In en, this message translates to:
+  /// **'Players'**
+  String get players;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @settingsComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings screen coming soon.'**
+  String get settingsComingSoon;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Game Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @impostorsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Impostors (no word)'**
+  String get impostorsLabel;
+
+  /// No description provided for @mrWhiteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mr. White'**
+  String get mrWhiteLabel;
+
+  /// No description provided for @impostorsShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Impostors'**
+  String get impostorsShort;
+
+  /// No description provided for @mrWhiteShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Mr White'**
+  String get mrWhiteShort;
+
+  /// No description provided for @minPlayersRule.
+  ///
+  /// In en, this message translates to:
+  /// **'Need at least {count} civilians.'**
+  String minPlayersRule(int count);
+
+  /// No description provided for @maxSpecialRoles.
+  ///
+  /// In en, this message translates to:
+  /// **'With {players} players, max special roles: {count}.'**
+  String maxSpecialRoles(int players, int count);
+
+  /// No description provided for @invalidSetupWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Add more players or reduce special roles to start.'**
+  String get invalidSetupWarning;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @needPlayersToStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least {count} players to start.'**
+  String needPlayersToStart(int count);
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @leaveGameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to lobby?'**
+  String get leaveGameTitle;
+
+  /// No description provided for @leaveGameMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will end the current round.'**
+  String get leaveGameMessage;
+
   /// No description provided for @waitingForPlayers.
   ///
   /// In en, this message translates to:
-  /// **'Waiting for players...'**
+  /// **'Add at least 3 players to start.'**
   String get waitingForPlayers;
 
   /// No description provided for @enterPlayerName.
@@ -197,7 +293,7 @@ abstract class AppLocalizations {
   /// No description provided for @spy.
   ///
   /// In en, this message translates to:
-  /// **'Spy'**
+  /// **'Impostor'**
   String get spy;
 
   /// No description provided for @secretWord.
@@ -239,7 +335,7 @@ abstract class AppLocalizations {
   /// No description provided for @whosTheSpy.
   ///
   /// In en, this message translates to:
-  /// **'Who is the Spy?'**
+  /// **'Who\'s the Impostor?'**
   String get whosTheSpy;
 
   /// No description provided for @voteToEliminate.
@@ -257,7 +353,7 @@ abstract class AppLocalizations {
   /// No description provided for @spyWin.
   ///
   /// In en, this message translates to:
-  /// **'Spy Wins!'**
+  /// **'Impostor Wins!'**
   String get spyWin;
 
   /// No description provided for @playAgain.
@@ -272,10 +368,28 @@ abstract class AppLocalizations {
   /// **'Back to Lobby'**
   String get backToLobby;
 
+  /// No description provided for @premium.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premium;
+
+  /// No description provided for @unlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited'**
+  String get unlimited;
+
+  /// No description provided for @roundsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounds left'**
+  String get roundsLeft;
+
   /// No description provided for @theSpyWas.
   ///
   /// In en, this message translates to:
-  /// **'The Spy was {name}'**
+  /// **'The Impostor was {name}'**
   String theSpyWas(String name);
 
   /// No description provided for @mrWhiteWas.
@@ -467,7 +581,7 @@ abstract class AppLocalizations {
   /// No description provided for @spyEvadedDetection.
   ///
   /// In en, this message translates to:
-  /// **'The spy evaded detection.'**
+  /// **'The impostor evaded detection.'**
   String get spyEvadedDetection;
 
   /// No description provided for @hiddenThreatEliminated.
@@ -605,7 +719,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingDesc2.
   ///
   /// In en, this message translates to:
-  /// **'Civilians share a secret word. The Impostor has a different one but must blend in.'**
+  /// **'Civilians share a secret word. The Impostor doesn\'t know it. Mr White knows nothing and must bluff.'**
   String get onboardingDesc2;
 
   /// No description provided for @onboardingTitle3.

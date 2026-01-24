@@ -26,7 +26,8 @@ class GameController extends ChangeNotifier {
 
   // Game Settings
   int impostorCount = 1;
-  bool useMrWhite = false;
+  int mrWhiteCount = 0;
+  static const int minCivilians = 3;
 
   // Feedback State
   String? _lastEliminationMessage;
@@ -54,6 +55,28 @@ class GameController extends ChangeNotifier {
   String? get lastEliminationMessage => _lastEliminationMessage;
   Player? get lastEliminatedPlayer => _lastEliminatedPlayer;
   bool get isRoleRevealed => _isRoleRevealed;
+  bool get hasMrWhite => mrWhiteCount > 0;
+  int get minPlayersRequired => impostorCount + mrWhiteCount + minCivilians;
+  bool get hasValidSetup => _players.length >= minPlayersRequired;
+
+  void updateImpostorCount(int value, {int? playerCount}) {
+    final count = playerCount ?? _players.length;
+    final maxTotal = max(0, count - minCivilians);
+    final maxImpostors = max(1, maxTotal - mrWhiteCount);
+    impostorCount = value.clamp(1, maxImpostors);
+    if (impostorCount + mrWhiteCount > maxTotal) {
+      mrWhiteCount = max(0, maxTotal - impostorCount);
+    }
+    notifyListeners();
+  }
+
+  void updateMrWhiteCount(int value, {int? playerCount}) {
+    final count = playerCount ?? _players.length;
+    final maxTotal = max(0, count - minCivilians);
+    final maxMrWhites = max(0, maxTotal - impostorCount);
+    mrWhiteCount = value.clamp(0, maxMrWhites);
+    notifyListeners();
+  }
 
   // Fun Messages (Roasts)
   final List<String> _funFailureMessages = [
@@ -82,8 +105,8 @@ class GameController extends ChangeNotifier {
   }
 
   void startGame(BuildContext context) {
-    if (_players.length < 3) {
-      return; // Minimum players
+    if (!hasValidSetup) {
+      return;
     }
 
     // Check quota
@@ -131,7 +154,7 @@ class GameController extends ChangeNotifier {
       if (assignedImpostors < impostorCount) {
         _players[i].role = Role.impostor;
         assignedImpostors++;
-      } else if (useMrWhite && assignedMrWhites < 1) {
+      } else if (assignedMrWhites < mrWhiteCount) {
         _players[i].role = Role.mrWhite;
         assignedMrWhites++;
       } else {
@@ -143,12 +166,11 @@ class GameController extends ChangeNotifier {
   void _setupTurnOrder() {
     _turnOrder = List.generate(_players.length, (i) => i)..shuffle();
 
-    // Ensure safe start: Impostor cannot be first
-    // Check if first player is impostor
-    if (_players[_turnOrder[0]].role == Role.impostor) {
-      // Find a civilian/mrWhite to swap with
+    // Ensure safe start: first player must know the word (civilian).
+    if (_players[_turnOrder[0]].role != Role.civilian) {
+      // Find a civilian to swap with
       for (int i = 1; i < _turnOrder.length; i++) {
-        if (_players[_turnOrder[i]].role != Role.impostor) {
+        if (_players[_turnOrder[i]].role == Role.civilian) {
           // Swap
           int temp = _turnOrder[0];
           _turnOrder[0] = _turnOrder[i];

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/grid_background.dart';
 import '../../game_controller.dart';
+import '../../core/confirm_exit.dart';
 import '../../core/theme.dart';
 
 import 'package:my_app/l10n/app_localizations.dart';
@@ -32,6 +33,14 @@ class ResultsScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            tooltip: loc.backToLobby,
+            icon: const Icon(Icons.close_rounded),
+            onPressed: () =>
+                confirmExitToLobby(context, onConfirm: controller.resetGame),
+          ),
+        ],
       ),
       body: GridBackground(
         child: SafeArea(
@@ -98,7 +107,7 @@ class ResultsScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(32),
                   decoration: BoxDecoration(
                     color: theme.cardTheme.color,
-                    borderRadius: BorderRadius.circular(32),
+                    borderRadius: AppTheme.cardRadius,
                     boxShadow: AppTheme.softShadows,
                   ),
                   child: Column(

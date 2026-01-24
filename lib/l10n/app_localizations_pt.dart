@@ -12,7 +12,63 @@ class AppLocalizationsPt extends AppLocalizations {
   String get lobbyTitle => 'Lobby';
 
   @override
-  String get waitingForPlayers => 'À espera de jogadores...';
+  String get players => 'Jogadores';
+
+  @override
+  String get settings => 'Definições';
+
+  @override
+  String get settingsComingSoon => 'Definições em breve.';
+
+  @override
+  String get settingsTitle => 'Definições do Jogo';
+
+  @override
+  String get impostorsLabel => 'Impostores (sem palavra)';
+
+  @override
+  String get mrWhiteLabel => 'Mr. White';
+
+  @override
+  String get impostorsShort => 'Impostores';
+
+  @override
+  String get mrWhiteShort => 'Mr White';
+
+  @override
+  String minPlayersRule(int count) {
+    return 'Precisa de pelo menos $count civis.';
+  }
+
+  @override
+  String maxSpecialRoles(int players, int count) {
+    return 'Com $players jogadores, máximo de papéis especiais: $count.';
+  }
+
+  @override
+  String get invalidSetupWarning =>
+      'Adicione mais jogadores ou reduza os papéis especiais para começar.';
+
+  @override
+  String get done => 'Concluir';
+
+  @override
+  String needPlayersToStart(int count) {
+    return 'Adicione pelo menos $count jogadores para começar.';
+  }
+
+  @override
+  String get cancel => 'Cancelar';
+
+  @override
+  String get leaveGameTitle => 'Voltar ao lobby?';
+
+  @override
+  String get leaveGameMessage => 'Isto termina a ronda atual.';
+
+  @override
+  String get waitingForPlayers =>
+      'Adicione pelo menos 3 jogadores para começar.';
 
   @override
   String get enterPlayerName => 'Insira o nome';
@@ -61,7 +117,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get civilian => 'Civil';
 
   @override
-  String get spy => 'Espião';
+  String get spy => 'Impostor';
 
   @override
   String get secretWord => 'Palavra Secreta';
@@ -82,7 +138,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get castYourVote => 'Votem agora';
 
   @override
-  String get whosTheSpy => 'Quem é o Espião?';
+  String get whosTheSpy => 'Quem é o Impostor?';
 
   @override
   String get voteToEliminate => 'Votar para eliminar';
@@ -91,7 +147,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get civilianWin => 'Civis Ganham!';
 
   @override
-  String get spyWin => 'Espião Ganha!';
+  String get spyWin => 'Impostor Vence!';
 
   @override
   String get playAgain => 'Jogar Novamente';
@@ -100,8 +156,17 @@ class AppLocalizationsPt extends AppLocalizations {
   String get backToLobby => 'Voltar ao Lobby';
 
   @override
+  String get premium => 'Premium';
+
+  @override
+  String get unlimited => 'Ilimitado';
+
+  @override
+  String get roundsLeft => 'Rondas restantes';
+
+  @override
   String theSpyWas(String name) {
-    return 'O Espião era $name';
+    return 'O Impostor era $name';
   }
 
   @override
@@ -214,7 +279,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get continueGame => 'Continuar';
 
   @override
-  String get spyEvadedDetection => 'O espião escapou à deteção.';
+  String get spyEvadedDetection => 'O impostor escapou à deteção.';
 
   @override
   String get hiddenThreatEliminated => 'A ameaça oculta foi eliminada.';
@@ -285,7 +350,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get onboardingDesc2 =>
-      'Os civis partilham uma palavra secreta. O Impostor tem uma diferente mas deve disfarçar-se.';
+      'Os civis partilham uma palavra secreta. O Impostor não a conhece. O Mr White não sabe nada e tem de blefar.';
 
   @override
   String get onboardingTitle3 => 'Não Confies em Ninguém';

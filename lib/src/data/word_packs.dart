@@ -1,67 +1,224 @@
-import 'dart:ui';
+import 'package:flutter/widgets.dart';
 import '../models/word_pair.dart';
 
 class WordPacks {
-  static final List<WordPair> _allWordsEn = [
-    // Pack 1
-    const WordPair(id: 'p1_1', civilianWord: 'Pizza', mrWhiteWord: 'Pasta'),
-    const WordPair(id: 'p1_2', civilianWord: 'Cat', mrWhiteWord: 'Dog'),
-    const WordPair(id: 'p1_3', civilianWord: 'Coffee', mrWhiteWord: 'Tea'),
-    const WordPair(id: 'p1_4', civilianWord: 'Superman', mrWhiteWord: 'Batman'),
-    // Pack 2
-    const WordPair(id: 'p2_1', civilianWord: 'Beach', mrWhiteWord: 'Desert'),
-    const WordPair(id: 'p2_2', civilianWord: 'Guitar', mrWhiteWord: 'Violin'),
-    const WordPair(id: 'p2_3', civilianWord: 'Train', mrWhiteWord: 'Bus'),
-    const WordPair(id: 'p2_4', civilianWord: 'Apple', mrWhiteWord: 'Orange'),
-    // Pack 3
-    const WordPair(id: 'p3_1', civilianWord: 'Snow', mrWhiteWord: 'Rain'),
-    const WordPair(id: 'p3_2', civilianWord: 'Doctor', mrWhiteWord: 'Teacher'),
-    const WordPair(id: 'p3_3', civilianWord: 'Castle', mrWhiteWord: 'Palace'),
-    const WordPair(id: 'p3_4', civilianWord: 'Rocket', mrWhiteWord: 'Airplane'),
-  ];
+  static const String _fallbackLanguage = 'en';
+  static const List<String> supportedLanguages = ['en', 'pt'];
 
-  static final List<WordPair> _allWordsPt = [
-    // Pack 1
-    const WordPair(id: 'p1_1', civilianWord: 'Pizza', mrWhiteWord: 'Massa'),
-    const WordPair(id: 'p1_2', civilianWord: 'Gato', mrWhiteWord: 'Cão'),
-    const WordPair(id: 'p1_3', civilianWord: 'Café', mrWhiteWord: 'Chá'),
+  static final List<WordPair> _allWords = [
+    // Pack 1 (EN)
     const WordPair(
-      id: 'p1_4',
+      id: 'en_p1_1',
+      civilianWord: 'Pizza',
+      mrWhiteWord: 'Pasta',
+      category: WordCategory.foods,
+      languageCode: 'en',
+    ),
+    const WordPair(
+      id: 'en_p1_2',
+      civilianWord: 'Cat',
+      mrWhiteWord: 'Dog',
+      category: WordCategory.animals,
+      languageCode: 'en',
+    ),
+    const WordPair(
+      id: 'en_p1_3',
+      civilianWord: 'Portugal',
+      mrWhiteWord: 'Spain',
+      category: WordCategory.countries,
+      languageCode: 'en',
+    ),
+    const WordPair(
+      id: 'en_p1_4',
+      civilianWord: 'Superman',
+      mrWhiteWord: 'Batman',
+      category: WordCategory.superheroes,
+      languageCode: 'en',
+    ),
+    // Pack 2 (EN)
+    const WordPair(
+      id: 'en_p2_1',
+      civilianWord: 'Guitar',
+      mrWhiteWord: 'Violin',
+      category: WordCategory.objects,
+      languageCode: 'en',
+    ),
+    const WordPair(
+      id: 'en_p2_2',
+      civilianWord: 'Doctor',
+      mrWhiteWord: 'Teacher',
+      category: WordCategory.professions,
+      languageCode: 'en',
+    ),
+    const WordPair(
+      id: 'en_p2_3',
+      civilianWord: 'Einstein',
+      mrWhiteWord: 'Newton',
+      category: WordCategory.knownPersons,
+      languageCode: 'en',
+    ),
+    const WordPair(
+      id: 'en_p2_4',
+      civilianWord: 'Soccer',
+      mrWhiteWord: 'Basketball',
+      category: WordCategory.sports,
+      languageCode: 'en',
+    ),
+    // Pack 3 (EN)
+    const WordPair(
+      id: 'en_p3_1',
+      civilianWord: 'Coffee',
+      mrWhiteWord: 'Tea',
+      category: WordCategory.foods,
+      languageCode: 'en',
+    ),
+    const WordPair(
+      id: 'en_p3_2',
+      civilianWord: 'Train',
+      mrWhiteWord: 'Bus',
+      category: WordCategory.objects,
+      languageCode: 'en',
+    ),
+    const WordPair(
+      id: 'en_p3_3',
+      civilianWord: 'Apple',
+      mrWhiteWord: 'Orange',
+      category: WordCategory.foods,
+      languageCode: 'en',
+    ),
+    const WordPair(
+      id: 'en_p3_4',
+      civilianWord: 'Rocket',
+      mrWhiteWord: 'Airplane',
+      category: WordCategory.objects,
+      languageCode: 'en',
+    ),
+    // Pack 1 (PT)
+    const WordPair(
+      id: 'pt_p1_1',
+      civilianWord: 'Pizza',
+      mrWhiteWord: 'Massa',
+      category: WordCategory.foods,
+      languageCode: 'pt',
+    ),
+    const WordPair(
+      id: 'pt_p1_2',
+      civilianWord: 'Gato',
+      mrWhiteWord: 'Cão',
+      category: WordCategory.animals,
+      languageCode: 'pt',
+    ),
+    const WordPair(
+      id: 'pt_p1_3',
+      civilianWord: 'Portugal',
+      mrWhiteWord: 'Espanha',
+      category: WordCategory.countries,
+      languageCode: 'pt',
+    ),
+    const WordPair(
+      id: 'pt_p1_4',
       civilianWord: 'Super-Homem',
       mrWhiteWord: 'Batman',
+      category: WordCategory.superheroes,
+      languageCode: 'pt',
     ),
-    // Pack 2
-    const WordPair(id: 'p2_1', civilianWord: 'Praia', mrWhiteWord: 'Deserto'),
+    // Pack 2 (PT)
     const WordPair(
-      id: 'p2_2',
+      id: 'pt_p2_1',
       civilianWord: 'Guitarra',
       mrWhiteWord: 'Violino',
+      category: WordCategory.objects,
+      languageCode: 'pt',
     ),
     const WordPair(
-      id: 'p2_3',
-      civilianWord: 'Comboio',
-      mrWhiteWord: 'Autocarro',
-    ),
-    const WordPair(id: 'p2_4', civilianWord: 'Maçã', mrWhiteWord: 'Laranja'),
-    // Pack 3
-    const WordPair(id: 'p3_1', civilianWord: 'Neve', mrWhiteWord: 'Chuva'),
-    const WordPair(
-      id: 'p3_2',
+      id: 'pt_p2_2',
       civilianWord: 'Médico',
       mrWhiteWord: 'Professor',
+      category: WordCategory.professions,
+      languageCode: 'pt',
     ),
-    const WordPair(id: 'p3_3', civilianWord: 'Castelo', mrWhiteWord: 'Palácio'),
-    const WordPair(id: 'p3_4', civilianWord: 'Foguetão', mrWhiteWord: 'Avião'),
+    const WordPair(
+      id: 'pt_p2_3',
+      civilianWord: 'Einstein',
+      mrWhiteWord: 'Newton',
+      category: WordCategory.knownPersons,
+      languageCode: 'pt',
+    ),
+    const WordPair(
+      id: 'pt_p2_4',
+      civilianWord: 'Futebol',
+      mrWhiteWord: 'Basquetebol',
+      category: WordCategory.sports,
+      languageCode: 'pt',
+    ),
+    // Pack 3 (PT)
+    const WordPair(
+      id: 'pt_p3_1',
+      civilianWord: 'Café',
+      mrWhiteWord: 'Chá',
+      category: WordCategory.foods,
+      languageCode: 'pt',
+    ),
+    const WordPair(
+      id: 'pt_p3_2',
+      civilianWord: 'Comboio',
+      mrWhiteWord: 'Autocarro',
+      category: WordCategory.objects,
+      languageCode: 'pt',
+    ),
+    const WordPair(
+      id: 'pt_p3_3',
+      civilianWord: 'Maçã',
+      mrWhiteWord: 'Laranja',
+      category: WordCategory.foods,
+      languageCode: 'pt',
+    ),
+    const WordPair(
+      id: 'pt_p3_4',
+      civilianWord: 'Foguetão',
+      mrWhiteWord: 'Avião',
+      category: WordCategory.objects,
+      languageCode: 'pt',
+    ),
   ];
 
   static List<WordPair> getWords(Locale locale) {
-    if (locale.languageCode == 'pt') {
-      return _allWordsPt;
+    final languageCode = locale.languageCode.toLowerCase();
+    final matches = _allWords
+        .where((word) => word.languageCode == languageCode)
+        .toList();
+    if (matches.isNotEmpty) {
+      return matches;
     }
-    return _allWordsEn;
+    return _allWords
+        .where((word) => word.languageCode == _fallbackLanguage)
+        .toList();
   }
 
-  // Backwards compatibility for MonetizationController which needs a default list
-  // Ideally MonetizationController should also be locale-aware, but for counting unique IDs, any list with correct IDs works.
-  static List<WordPair> get allWords => _allWordsEn;
+  static List<WordPair> getWordsByPack(Locale locale, int packNumber) {
+    final languageCode = locale.languageCode.toLowerCase();
+    final packId = '_p${packNumber}_';
+    final matches = _allWords
+        .where(
+          (word) =>
+              word.languageCode == languageCode && word.id.contains(packId),
+        )
+        .toList();
+    if (matches.isNotEmpty) {
+      return matches;
+    }
+    return _allWords
+        .where(
+          (word) =>
+              word.languageCode == _fallbackLanguage &&
+              word.id.contains(packId),
+        )
+        .toList();
+  }
+
+  static bool isSupported(Locale locale) {
+    return supportedLanguages.contains(locale.languageCode.toLowerCase());
+  }
+
+  static List<WordPair> get allWords => _allWords;
 }

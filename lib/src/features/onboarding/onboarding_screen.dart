@@ -33,6 +33,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
@@ -94,9 +100,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               const SizedBox(width: 8),
                               Text(
                                 loc.onboardingAppName,
-                                style: GoogleFonts.outfit(
+                                style: GoogleFonts.sora(
                                   color: theme.colorScheme.onSurface,
-                                  fontWeight: FontWeight.w900,
+                                  fontWeight: FontWeight.w800,
                                   letterSpacing: 1,
                                 ),
                               ),
@@ -143,64 +149,85 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: theme.cardTheme.color,
-                          borderRadius: BorderRadius.circular(32),
+                          borderRadius: AppTheme.cardRadius,
                           boxShadow: AppTheme.softShadows,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(32.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(24),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: theme.colorScheme.primary.withValues(
-                                    alpha: 0.1,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            return SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minHeight: constraints.maxHeight,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(32.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(24),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: theme.colorScheme.primary
+                                              .withValues(alpha: 0.1),
+                                        ),
+                                        child: Icon(
+                                          _getIcon(page['icon']!),
+                                          size: 64,
+                                          color: theme.colorScheme.primary,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 32),
+                                      Text(
+                                        page['title']!.toUpperCase(),
+                                        style: GoogleFonts.sora(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.w900,
+                                          color: theme.colorScheme.onSurface,
+                                          letterSpacing: -1,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Text(
+                                        page['description']!,
+                                        style: textTheme.bodyLarge?.copyWith(
+                                          color: theme.hintColor,
+                                          height: 1.5,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 32),
+                                      Wrap(
+                                        alignment: WrapAlignment.center,
+                                        spacing: 8,
+                                        runSpacing: 8,
+                                        children: [
+                                          _buildChip(
+                                            loc.onboardingChip1,
+                                            theme,
+                                          ),
+                                          _buildChip(
+                                            loc.onboardingChip2,
+                                            theme,
+                                          ),
+                                          _buildChip(
+                                            loc.onboardingChip3,
+                                            theme,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                child: Icon(
-                                  _getIcon(page['icon']!),
-                                  size: 64,
-                                  color: theme.colorScheme.primary,
-                                ),
                               ),
-                              const SizedBox(height: 32),
-                              Text(
-                                page['title']!.toUpperCase(),
-                                style: GoogleFonts.outfit(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w900,
-                                  color: theme.colorScheme.onSurface,
-                                  letterSpacing: -1,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                page['description']!,
-                                style: textTheme.bodyLarge?.copyWith(
-                                  color: theme.hintColor,
-                                  height: 1.5,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 32),
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                spacing: 8,
-                                runSpacing: 8,
-                                children: [
-                                  _buildChip(loc.onboardingChip1, theme),
-                                  _buildChip(loc.onboardingChip2, theme),
-                                  _buildChip(loc.onboardingChip3, theme),
-                                ],
-                              ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
                       ),
                     );

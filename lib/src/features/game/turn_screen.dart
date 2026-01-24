@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/l10n/app_localizations.dart';
 import '../../core/grid_background.dart';
+import '../../core/confirm_exit.dart';
 import '../../core/theme.dart';
 import '../../game_controller.dart';
 import '../../models/game_state.dart';
@@ -47,6 +48,14 @@ class _TurnScreenState extends State<TurnScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            tooltip: loc.backToLobby,
+            icon: const Icon(Icons.close_rounded),
+            onPressed: () =>
+                confirmExitToLobby(context, onConfirm: controller.resetGame),
+          ),
+        ],
       ),
       body: GridBackground(
         child: SafeArea(
@@ -76,7 +85,7 @@ class _TurnScreenState extends State<TurnScreen> {
                   child: Center(
                     child: Text(
                       initial,
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.sora(
                         fontSize: 64,
                         color: Colors.white, // Always white on secondary
                         fontWeight: FontWeight.bold,
@@ -107,7 +116,7 @@ class _TurnScreenState extends State<TurnScreen> {
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(32),
+                    borderRadius: AppTheme.cardRadius,
                     boxShadow: AppTheme.softShadows,
                     border: Border.all(
                       color: theme.dividerColor.withValues(alpha: 0.2),
