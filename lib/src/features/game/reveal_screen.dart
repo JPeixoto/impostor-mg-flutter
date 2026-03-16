@@ -17,8 +17,7 @@ class RevealScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final loc = AppLocalizations.of(context)!;
-    final hideRoleLabel =
-        controller.hasMrWhite && controller.hideRolesWhenMrWhite;
+    final hideRoleIdentity = controller.hideRoleIdentity;
 
     if (player == null) {
       return const SizedBox.shrink();
@@ -27,15 +26,11 @@ class RevealScreen extends StatelessWidget {
     final isImpostor = player.role == Role.impostor;
     final isMrWhite = player.role == Role.mrWhite;
     final isBadGuy = isImpostor || isMrWhite;
-
-    // Secret word logic: Mr White sees "???" or their specific word if we had one (but description says knows nothing)
-    // Impostor also doesn't know the word usually, but let's stick to the prompt's logic.
-    // The previous code had:
-    // final secretWord = controller.currentWordPair?.civilianWord ?? '???';
-    // And showed it if NOT spy.
-    // Mr White should NOT see the secret word.
-
-    final secretWord = controller.currentWordPair?.civilianWord ?? '???';
+    final roleWord = controller.wordForRole(player.role) ?? '???';
+    final hasWord = !isMrWhite;
+    final wordAccentColor = hideRoleIdentity
+        ? theme.colorScheme.primary
+        : (isImpostor ? theme.colorScheme.error : theme.colorScheme.secondary);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -88,7 +83,7 @@ class RevealScreen extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              if (!hideRoleLabel)
+                              if (!hideRoleIdentity)
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16,
@@ -127,20 +122,20 @@ class RevealScreen extends StatelessWidget {
                                   ),
                                 ),
                               const SizedBox(height: 32),
-                              if (isBadGuy)
+                              if (!hasWord)
                                 Icon(
                                   Icons.visibility_off_rounded,
                                   size: 80,
-                                  color: theme.colorScheme.error,
+                                  color: wordAccentColor,
                                 )
                               else
                                 Icon(
                                   Icons.vpn_key_rounded,
                                   size: 80,
-                                  color: theme.colorScheme.secondary,
+                                  color: wordAccentColor,
                                 ),
                               const SizedBox(height: 32),
-                              if (isBadGuy) ...[
+                              if (!hasWord && !hideRoleIdentity) ...[
                                 Text(
                                   loc.blendIn.toUpperCase(),
                                   style: textTheme.displayMedium?.copyWith(
@@ -152,11 +147,7 @@ class RevealScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 16),
                                 Text(
-                                  hideRoleLabel
-                                      ? loc.impostorInstruction
-                                      : isMrWhite
-                                      ? loc.mrWhiteDescription
-                                      : loc.impostorInstruction,
+                                  loc.mrWhiteDescription,
                                   style: textTheme.bodyLarge?.copyWith(
                                     height: 1.5,
                                     fontWeight: FontWeight.w500,
@@ -165,7 +156,11 @@ class RevealScreen extends StatelessWidget {
                                 ),
                               ] else ...[
                                 Text(
-                                  loc.theSecretWord,
+                                  hideRoleIdentity
+                                      ? loc.secretWord
+                                      : (isImpostor
+                                            ? loc.yourWord
+                                            : loc.theSecretWord),
                                   style: textTheme.titleLarge?.copyWith(
                                     color: theme.colorScheme.onSurface,
                                     fontWeight: FontWeight.bold,
@@ -179,31 +174,48 @@ class RevealScreen extends StatelessWidget {
                                     vertical: 20,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: theme.colorScheme.secondary
-                                        .withValues(alpha: 0.2),
+                                    color: wordAccentColor.withValues(
+                                      alpha: 0.2,
+                                    ),
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
-                                      color: theme.colorScheme.secondary,
+                                      color: wordAccentColor,
                                       width: 2,
                                     ),
                                   ),
-                                  child: Text(
-                                    secretWord.toUpperCase(),
-                                    style: textTheme.displayMedium?.copyWith(
-                                      color: theme.colorScheme.secondary,
-                                      fontWeight: FontWeight.w900,
-                                      letterSpacing: 2,
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      hasWord
+                                          ? roleWord.toUpperCase()
+                                          : loc.unknown.toUpperCase(),
+                                      style: textTheme.displayMedium?.copyWith(
+                                        color: wordAccentColor,
+                                        fontWeight: FontWeight.w900,
+                                        letterSpacing: 2,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                                 const SizedBox(height: 24),
                                 Text(
-                                  loc.dontBeTooObvious,
+                                  hideRoleIdentity
+                                      ? loc.dontBeTooObvious
+                                      : (isImpostor
+                                            ? loc.impostorInstruction
+                                            : loc.dontBeTooObvious),
                                   style: textTheme.bodyLarge?.copyWith(
-                                    color: theme.colorScheme.onSurfaceVariant,
+                                    color: hideRoleIdentity
+                                        ? theme.colorScheme.onSurfaceVariant
+                                        : (isImpostor
+                                              ? theme.colorScheme.error
+                                              : theme
+                                                    .colorScheme
+                                                    .onSurfaceVariant),
                                     fontWeight: FontWeight.w500,
                                   ),
+                                  textAlign: TextAlign.center,
                                 ),
                               ],
                             ],

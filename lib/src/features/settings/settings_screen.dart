@@ -1,8 +1,10 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:my_app/l10n/app_localizations.dart';
 import '../../game_controller.dart';
 import '../../core/theme.dart';
+import 'settings_controller.dart';
 
 class SettingsScreen extends StatelessWidget {
   final int playerCount;
@@ -16,18 +18,36 @@ class SettingsScreen extends StatelessWidget {
     final textTheme = theme.textTheme;
     final loc = AppLocalizations.of(context)!;
 
-    final maxTotal =
-        (playerCount - GameController.minCivilians).clamp(0, 999).toInt();
-    final maxImpostors =
-        (maxTotal - controller.mrWhiteCount).clamp(1, 999).toInt();
-    final maxMrWhites =
-        (maxTotal - controller.impostorCount).clamp(0, 999).toInt();
+    final maxTotal = (playerCount - GameController.minCivilians)
+        .clamp(0, 999)
+        .toInt();
+    final effectiveMaxTotal = math.max(1, maxTotal);
     final isValidSetup = controller.hasValidSetup;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(loc.settingsTitle),
         centerTitle: true,
+        actions: [
+          Consumer<SettingsController>(
+            builder: (context, settings, child) {
+              final isDarkMode = settings.themeMode == ThemeMode.dark;
+              return IconButton(
+                icon: Icon(
+                  isDarkMode
+                      ? Icons.light_mode_rounded
+                      : Icons.dark_mode_rounded,
+                ),
+                onPressed: () {
+                  settings.updateThemeMode(
+                    isDarkMode ? ThemeMode.light : ThemeMode.dark,
+                  );
+                },
+              );
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -65,8 +85,8 @@ class SettingsScreen extends StatelessWidget {
               _SettingCounterCard(
                 title: loc.impostorsLabel,
                 value: controller.impostorCount,
-                minValue: 1,
-                maxValue: maxImpostors,
+                minValue: 0,
+                maxValue: effectiveMaxTotal,
                 onChanged: (value) => controller.updateImpostorCount(
                   value,
                   playerCount: playerCount,
@@ -77,7 +97,7 @@ class SettingsScreen extends StatelessWidget {
                 title: loc.mrWhiteLabel,
                 value: controller.mrWhiteCount,
                 minValue: 0,
-                maxValue: maxMrWhites,
+                maxValue: effectiveMaxTotal,
                 onChanged: (value) => controller.updateMrWhiteCount(
                   value,
                   playerCount: playerCount,
@@ -87,8 +107,8 @@ class SettingsScreen extends StatelessWidget {
               _SettingToggleCard(
                 title: loc.hideRolesWhenMrWhiteLabel,
                 subtitle: loc.hideRolesWhenMrWhiteHint,
-                value: controller.hideRolesWhenMrWhite,
-                onChanged: controller.updateHideRolesWhenMrWhite,
+                value: controller.hideRoleIdentity,
+                onChanged: controller.updateHideRoleIdentity,
               ),
               if (!isValidSetup) ...[
                 const SizedBox(height: 16),

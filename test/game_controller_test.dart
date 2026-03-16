@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_app/src/game_controller.dart';
 import 'package:my_app/src/models/game_state.dart';
+import 'package:my_app/src/models/role.dart';
 import 'package:my_app/src/models/winner_type.dart';
+import 'package:my_app/src/models/word_pair.dart';
 
 void main() {
   group('GameController', () {
@@ -47,12 +49,12 @@ void main() {
       expect(controller.hasValidSetup, isTrue);
     });
 
-    test('resetGame clears the players list', () {
+    test('resetGame keeps players when returning to lobby', () {
       controller.addPlayer('Alice');
       controller.addPlayer('Bob');
       expect(controller.players.length, 2);
       controller.resetGame();
-      expect(controller.players, isEmpty);
+      expect(controller.players.length, 2);
       expect(controller.currentState, GameState.lobby);
     });
 
@@ -86,6 +88,26 @@ void main() {
             controller.mrWhiteCount +
             GameController.minCivilians,
       );
+    });
+
+    test('wordForRole maps roles to the expected word visibility', () {
+      const pair = WordPair(
+        id: 'test',
+        civilianWord: 'Pizza',
+        impostorWord: 'Pasta',
+        category: WordCategory.foods,
+        languageCode: 'en',
+      );
+
+      expect(
+        controller.wordForRole(Role.civilian, wordPair: pair),
+        pair.civilianWord,
+      );
+      expect(
+        controller.wordForRole(Role.impostor, wordPair: pair),
+        pair.impostorWord,
+      );
+      expect(controller.wordForRole(Role.mrWhite, wordPair: pair), isNull);
     });
 
     test('players list is unmodifiable', () {

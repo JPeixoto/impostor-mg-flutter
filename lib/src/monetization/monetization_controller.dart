@@ -55,8 +55,6 @@ class MonetizationController extends ChangeNotifier {
 
   // Public Getters
   int get dailyQuota => _dailyQuota;
-  int get seenWordsCount => _seenWordIds.length;
-  int get totalWords => WordPacks.allWords.length;
 
   bool get hasActivePass {
     final now = DateTime.now().toUtc();
@@ -207,7 +205,17 @@ class MonetizationController extends ChangeNotifier {
 
   Future<bool> purchaseDayPass() async {
     _purchaseError = null;
-    if (!_iapAvailable || _passProduct == null) {
+    if (!_iapAvailable) {
+      _purchaseError = purchaseErrorStoreUnavailable;
+      notifyListeners();
+      return false;
+    }
+
+    if (_passProduct == null) {
+      await _queryProducts();
+    }
+
+    if (_passProduct == null) {
       _purchaseError = purchaseErrorStoreUnavailable;
       notifyListeners();
       return false;
@@ -218,13 +226,18 @@ class MonetizationController extends ChangeNotifier {
 
     final purchaseParam = PurchaseParam(productDetails: _passProduct!);
     try {
-      // autoConsume: false — we complete the purchase manually only AFTER
-      // _activatePass() succeeds, preventing a crash-between-consume-and-
-      // activation from losing the user's payment.
-      await _iap.buyConsumable(
-        purchaseParam: purchaseParam,
-        autoConsume: false,
-      );
+      if (Platform.isIOS) {
+        // StoreKit consumables must auto-consume on iOS.
+        await _iap.buyConsumable(purchaseParam: purchaseParam);
+      } else {
+        // autoConsume: false — we complete the purchase manually only AFTER
+        // _activatePass() succeeds, preventing a crash-between-consume-and-
+        // activation from losing the user's payment.
+        await _iap.buyConsumable(
+          purchaseParam: purchaseParam,
+          autoConsume: false,
+        );
+      }
       return true;
     } catch (error) {
       _isPurchasePending = false;
@@ -235,9 +248,10 @@ class MonetizationController extends ChangeNotifier {
   }
 
   Future<void> _queryProducts() async {
+    _passProduct = null;
     final response = await _iap.queryProductDetails({_passProductId});
     if (response.notFoundIDs.isNotEmpty) {
-      // Logic for dev/testing: create mock product if needed or just log
+      debugPrint('Day pass product not found: ${response.notFoundIDs.join(", ")}');
     }
     if (response.productDetails.isNotEmpty) {
       _passProduct = response.productDetails.first;
@@ -297,22 +311,6 @@ class MonetizationController extends ChangeNotifier {
   void clearPurchaseError() {
     _purchaseError = null;
     notifyListeners();
-  }
-
-  /// Restores any previous purchases for the current user.
-  /// Required by Apple App Review Guidelines (3.1.1) for apps with IAP.
-  Future<void> restorePurchases() async {
-    if (!_iapAvailable) return;
-    _isPurchasePending = true;
-    _purchaseError = null;
-    notifyListeners();
-    try {
-      await _iap.restorePurchases();
-    } catch (_) {
-      _isPurchasePending = false;
-      _purchaseError = purchaseErrorStartFailed;
-      notifyListeners();
-    }
   }
 
   // Persistence Helpers

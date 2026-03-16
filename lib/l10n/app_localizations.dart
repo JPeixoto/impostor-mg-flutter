@@ -128,13 +128,13 @@ abstract class AppLocalizations {
   /// No description provided for @impostorsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Impostors (no word)'**
+  /// **'Impostors (different word)'**
   String get impostorsLabel;
 
   /// No description provided for @mrWhiteLabel.
   ///
   /// In en, this message translates to:
-  /// **'Mr. White'**
+  /// **'Mr. White (no word)'**
   String get mrWhiteLabel;
 
   /// No description provided for @impostorsShort.
@@ -158,25 +158,25 @@ abstract class AppLocalizations {
   /// No description provided for @maxSpecialRoles.
   ///
   /// In en, this message translates to:
-  /// **'With {players} players, max special roles: {count}.'**
+  /// **'With {players} players, max liars: {count}.'**
   String maxSpecialRoles(int players, int count);
 
   /// No description provided for @invalidSetupWarning.
   ///
   /// In en, this message translates to:
-  /// **'Add more players or reduce special roles to start.'**
+  /// **'Add more players or reduce liars to start.'**
   String get invalidSetupWarning;
 
   /// No description provided for @hideRolesWhenMrWhiteLabel.
   ///
   /// In en, this message translates to:
-  /// **'Hide role labels with Mr White'**
+  /// **'Hide role identity'**
   String get hideRolesWhenMrWhiteLabel;
 
   /// No description provided for @hideRolesWhenMrWhiteHint.
   ///
   /// In en, this message translates to:
-  /// **'If enabled, role labels are hidden whenever Mr White is included in the round.'**
+  /// **'If enabled, players see only word clues and do not see their exact role.'**
   String get hideRolesWhenMrWhiteHint;
 
   /// No description provided for @done.
@@ -260,7 +260,7 @@ abstract class AppLocalizations {
   /// No description provided for @mrWhiteDescription.
   ///
   /// In en, this message translates to:
-  /// **'Adds an impostor who knows nothing'**
+  /// **'You get no word.\nListen carefully and bluff.'**
   String get mrWhiteDescription;
 
   /// No description provided for @watchAd.
@@ -311,6 +311,12 @@ abstract class AppLocalizations {
   /// **'Secret Word'**
   String get secretWord;
 
+  /// No description provided for @yourWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Word'**
+  String get yourWord;
+
   /// No description provided for @unknown.
   ///
   /// In en, this message translates to:
@@ -344,7 +350,7 @@ abstract class AppLocalizations {
   /// No description provided for @whosTheSpy.
   ///
   /// In en, this message translates to:
-  /// **'Who\'s the Impostor?'**
+  /// **'Who\'s suspicious?'**
   String get whosTheSpy;
 
   /// No description provided for @voteToEliminate.
@@ -362,7 +368,7 @@ abstract class AppLocalizations {
   /// No description provided for @spyWin.
   ///
   /// In en, this message translates to:
-  /// **'Impostor Wins!'**
+  /// **'Liars Win!'**
   String get spyWin;
 
   /// No description provided for @playAgain.
@@ -512,7 +518,7 @@ abstract class AppLocalizations {
   /// No description provided for @askYesNoQuestion.
   ///
   /// In en, this message translates to:
-  /// **'Ask a yes/no question'**
+  /// **'Say a word or expression'**
   String get askYesNoQuestion;
 
   /// No description provided for @tapDoneWhenFinished.
@@ -566,7 +572,7 @@ abstract class AppLocalizations {
   /// No description provided for @impostorInstruction.
   ///
   /// In en, this message translates to:
-  /// **'You don\'t know the secret word.\nListen carefully and fake it!'**
+  /// **'Your word is different from the civilians\'.\nBlend in without giving yourself away!'**
   String get impostorInstruction;
 
   /// No description provided for @theSecretWord.
@@ -614,7 +620,7 @@ abstract class AppLocalizations {
   /// No description provided for @youCaughtTheImpostor.
   ///
   /// In en, this message translates to:
-  /// **'You caught the Impostor!'**
+  /// **'You caught a liar!'**
   String get youCaughtTheImpostor;
 
   /// No description provided for @youVotedOutInnocent.
@@ -632,7 +638,7 @@ abstract class AppLocalizations {
   /// No description provided for @spyEvadedDetection.
   ///
   /// In en, this message translates to:
-  /// **'The impostor evaded detection.'**
+  /// **'The liars evaded detection.'**
   String get spyEvadedDetection;
 
   /// No description provided for @hiddenThreatEliminated.
@@ -716,7 +722,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingAppName.
   ///
   /// In en, this message translates to:
-  /// **'IMPOSTOR PARTY'**
+  /// **'SOMEONE IS LYING'**
   String get onboardingAppName;
 
   /// No description provided for @onboardingTagline.
@@ -770,7 +776,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingDesc2.
   ///
   /// In en, this message translates to:
-  /// **'Civilians share a secret word. The Impostor doesn\'t know it. Mr White knows nothing and must bluff.'**
+  /// **'Civilians share a secret word. The Impostor gets a different word. Mr White gets no word and must bluff.'**
   String get onboardingDesc2;
 
   /// No description provided for @onboardingTitle3.
@@ -782,7 +788,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingDesc3.
   ///
   /// In en, this message translates to:
-  /// **'Discuss, vote, and eliminate the Impostor before it\'s too late.'**
+  /// **'Discuss, vote, and eliminate the liars before it\'s too late.'**
   String get onboardingDesc3;
 
   /// No description provided for @onboardingChip1.
@@ -803,12 +809,6 @@ abstract class AppLocalizations {
   /// **'Pass-and-play'**
   String get onboardingChip3;
 
-  /// No description provided for @restorePurchases.
-  ///
-  /// In en, this message translates to:
-  /// **'Restore Purchases'**
-  String get restorePurchases;
-
   /// No description provided for @funFail0.
   ///
   /// In en, this message translates to:
@@ -824,13 +824,13 @@ abstract class AppLocalizations {
   /// No description provided for @funFail2.
   ///
   /// In en, this message translates to:
-  /// **'Congratulations! You helped the Impostor by voting out {name}.'**
+  /// **'Congratulations! You helped the liars by voting out {name}.'**
   String funFail2(String name);
 
   /// No description provided for @funFail3.
   ///
   /// In en, this message translates to:
-  /// **'{name} was NOT the impostor. The Impostor is probably laughing right now.'**
+  /// **'{name} was NOT a liar. The liars are probably laughing right now.'**
   String funFail3(String name);
 
   /// No description provided for @funFail4.
@@ -866,7 +866,7 @@ abstract class AppLocalizations {
   /// No description provided for @winImpostorsMessage.
   ///
   /// In en, this message translates to:
-  /// **'Impostors Win! ({names}) outlasted the civilians.'**
+  /// **'Liars Win! ({names}) outlasted the civilians.'**
   String winImpostorsMessage(String names);
 }
 

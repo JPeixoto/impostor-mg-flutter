@@ -5,7 +5,6 @@ import '../../core/grid_background.dart';
 import '../../core/theme.dart';
 import '../../game_controller.dart';
 import '../../monetization/monetization_controller.dart';
-import '../../features/settings/settings_controller.dart';
 import '../../features/settings/settings_screen.dart';
 
 class LobbyScreen extends StatefulWidget {
@@ -104,22 +103,11 @@ class _LobbyScreenState extends State<LobbyScreen> {
         ),
         centerTitle: true,
         actions: [
-          Consumer<SettingsController>(
-            builder: (context, settings, child) {
-              return IconButton(
-                icon: Icon(
-                  settings.themeMode == ThemeMode.dark
-                      ? Icons.dark_mode_rounded
-                      : Icons.light_mode_rounded,
-                ),
-                onPressed: () {
-                  settings.updateThemeMode(
-                    settings.themeMode == ThemeMode.dark
-                        ? ThemeMode.light
-                        : ThemeMode.dark,
-                  );
-                },
-              );
+          IconButton(
+            tooltip: loc.onboardingTagline,
+            icon: const Icon(Icons.info_outline_rounded),
+            onPressed: () {
+              context.read<GameController>().openOnboarding();
             },
           ),
           const SizedBox(width: 8),
@@ -432,50 +420,42 @@ class _LobbyScreenState extends State<LobbyScreen> {
                         const SizedBox(height: 12),
 
                         // Add Player Input (At bottom of player list)
-                        Container(
-                          decoration: BoxDecoration(
-                            color: theme.inputDecorationTheme.fillColor,
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: theme.dividerColor),
-                          ),
-                          child: TextField(
-                            controller: _nameController,
-                            style: textTheme.bodyMedium,
-                            decoration: InputDecoration(
-                              hintText: loc.enterPlayerName,
-                              hintStyle: textTheme.bodyMedium?.copyWith(
-                                color: theme.hintColor,
-                              ),
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 12,
-                              ),
-                              suffixIcon: Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: Material(
-                                  color: theme.colorScheme.primary,
+                        TextField(
+                          controller: _nameController,
+                          style: textTheme.bodyMedium,
+                          decoration: InputDecoration(
+                            hintText: loc.enterPlayerName,
+                            hintStyle: textTheme.bodyMedium?.copyWith(
+                              color: theme.hintColor,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            suffixIcon: Padding(
+                              padding: const EdgeInsets.all(4),
+                              child: Material(
+                                color: theme.colorScheme.primary,
+                                borderRadius: BorderRadius.circular(12),
+                                child: InkWell(
                                   borderRadius: BorderRadius.circular(12),
-                                  child: InkWell(
-                                    borderRadius: BorderRadius.circular(12),
-                                    onTap: _addPlayer,
-                                    child: SizedBox(
-                                      width: 36,
-                                      height: 36,
-                                      child: Icon(
-                                        Icons.add_rounded,
-                                        color: theme.colorScheme.onPrimary,
-                                        size: 20,
-                                      ),
+                                  onTap: _addPlayer,
+                                  child: SizedBox(
+                                    width: 36,
+                                    height: 36,
+                                    child: Icon(
+                                      Icons.add_rounded,
+                                      color: theme.colorScheme.onPrimary,
+                                      size: 20,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            textCapitalization: TextCapitalization.words,
-                            textInputAction: TextInputAction.done,
-                            onSubmitted: (_) => _addPlayer(),
                           ),
+                          textCapitalization: TextCapitalization.words,
+                          textInputAction: TextInputAction.done,
+                          onSubmitted: (_) => _addPlayer(),
                         ),
                       ],
                     ),
@@ -519,7 +499,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            loc.needPlayersToStart(controller.minPlayersRequired),
+                            loc.needPlayersToStart(
+                              controller.minPlayersRequired,
+                            ),
                           ),
                         ),
                       );
@@ -837,17 +819,6 @@ class _UnlockWordsSheetState extends State<_UnlockWordsSheet> {
     setState(() => _isWorking = false);
   }
 
-  Future<void> _restorePurchases(MonetizationController monetization) async {
-    if (_isWorking) return;
-    setState(() {
-      _isWorking = true;
-      _localError = null;
-    });
-    await monetization.restorePurchases();
-    if (!mounted) return;
-    setState(() => _isWorking = false);
-  }
-
   @override
   Widget build(BuildContext context) {
     final monetization = context.watch<MonetizationController>();
@@ -856,6 +827,7 @@ class _UnlockWordsSheetState extends State<_UnlockWordsSheet> {
     final loc = AppLocalizations.of(context)!;
 
     final priceLabel = monetization.passProduct?.price ?? loc.dayPassFallback;
+    final isPassAvailable = monetization.isPassAvailable;
 
     if (monetization.hasActivePass) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -865,7 +837,10 @@ class _UnlockWordsSheetState extends State<_UnlockWordsSheet> {
 
     final errorMessage =
         _localError ??
-        _resolvePurchaseErrorMessage(loc, monetization.purchaseError);
+        _resolvePurchaseErrorMessage(loc, monetization.purchaseError) ??
+        (monetization.isInitialized && !isPassAvailable
+            ? loc.purchaseStoreUnavailable
+            : null);
     final isBusy = _isWorking || monetization.isPurchasePending;
 
     return Padding(
@@ -930,7 +905,9 @@ class _UnlockWordsSheetState extends State<_UnlockWordsSheet> {
             ),
             const SizedBox(height: 12),
             ElevatedButton.icon(
-              onPressed: !isBusy ? () => _buyPass(monetization) : null,
+              onPressed: (!isBusy && isPassAvailable)
+                  ? () => _buyPass(monetization)
+                  : null,
               icon: const Icon(Icons.lock_open_rounded),
               label: Text(loc.getPass(priceLabel)),
               style: ElevatedButton.styleFrom(
@@ -946,15 +923,6 @@ class _UnlockWordsSheetState extends State<_UnlockWordsSheet> {
             TextButton(
               onPressed: isBusy ? null : () => Navigator.of(context).pop(false),
               child: Text(loc.notNow),
-            ),
-            TextButton(
-              onPressed: isBusy ? null : () => _restorePurchases(monetization),
-              child: Text(
-                loc.restorePurchases,
-                style: textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
             ),
           ],
         ),

@@ -35,10 +35,6 @@ class OnboardingGate {
     );
   }
 
-  static String buildVersionTagForTesting(PackageInfo info) {
-    return _buildVersionTag(info);
-  }
-
   static String _buildVersionTag(PackageInfo info) {
     final version = info.version.trim();
     final buildNumber = info.buildNumber.trim();

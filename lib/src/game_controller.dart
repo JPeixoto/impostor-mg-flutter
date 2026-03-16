@@ -29,7 +29,7 @@ class GameController extends ChangeNotifier {
   // Game Settings
   int impostorCount = 1;
   int mrWhiteCount = 0;
-  bool _hideRolesWhenMrWhite = true;
+  bool _hideRoleIdentity = true;
   static const int minCivilians = 3;
 
   // Feedback State
@@ -55,18 +55,35 @@ class GameController extends ChangeNotifier {
   int? get lastEliminationMessageVariant => _lastEliminationMessageVariant;
   Player? get lastEliminatedPlayer => _lastEliminatedPlayer;
   bool get isRoleRevealed => _isRoleRevealed;
-  bool get hasMrWhite => mrWhiteCount > 0;
-  bool get hideRolesWhenMrWhite => _hideRolesWhenMrWhite;
+  bool get hideRoleIdentity => _hideRoleIdentity;
   int get minPlayersRequired => impostorCount + mrWhiteCount + minCivilians;
   bool get hasValidSetup => _players.length >= minPlayersRequired;
+
+  String? wordForRole(Role? role, {WordPair? wordPair}) {
+    final pair = wordPair ?? _currentWordPair;
+    if (role == null || pair == null) return null;
+
+    switch (role) {
+      case Role.civilian:
+        return pair.civilianWord;
+      case Role.impostor:
+        return pair.impostorWord;
+      case Role.mrWhite:
+        return null;
+    }
+  }
 
   void updateImpostorCount(int value, {int? playerCount}) {
     final count = playerCount ?? _players.length;
     final maxTotal = max(0, count - minCivilians);
-    final maxImpostors = max(1, maxTotal - mrWhiteCount);
-    impostorCount = value.clamp(1, maxImpostors);
-    if (impostorCount + mrWhiteCount > maxTotal) {
-      mrWhiteCount = max(0, maxTotal - impostorCount);
+    final effectiveMaxTotal = max(1, maxTotal);
+
+    impostorCount = value.clamp(0, effectiveMaxTotal);
+
+    if (impostorCount == 0 && mrWhiteCount == 0) {
+      mrWhiteCount = 1;
+    } else if (impostorCount + mrWhiteCount > effectiveMaxTotal) {
+      mrWhiteCount = max(0, effectiveMaxTotal - impostorCount);
     }
     notifyListeners();
   }
@@ -74,14 +91,21 @@ class GameController extends ChangeNotifier {
   void updateMrWhiteCount(int value, {int? playerCount}) {
     final count = playerCount ?? _players.length;
     final maxTotal = max(0, count - minCivilians);
-    final maxMrWhites = max(0, maxTotal - impostorCount);
-    mrWhiteCount = value.clamp(0, maxMrWhites);
+    final effectiveMaxTotal = max(1, maxTotal);
+
+    mrWhiteCount = value.clamp(0, effectiveMaxTotal);
+
+    if (mrWhiteCount == 0 && impostorCount == 0) {
+      impostorCount = 1;
+    } else if (impostorCount + mrWhiteCount > effectiveMaxTotal) {
+      impostorCount = max(0, effectiveMaxTotal - mrWhiteCount);
+    }
     notifyListeners();
   }
 
-  void updateHideRolesWhenMrWhite(bool value) {
-    if (_hideRolesWhenMrWhite == value) return;
-    _hideRolesWhenMrWhite = value;
+  void updateHideRoleIdentity(bool value) {
+    if (_hideRoleIdentity == value) return;
+    _hideRoleIdentity = value;
     notifyListeners();
   }
 
@@ -215,10 +239,6 @@ class GameController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void endTurn() {
-    nextPlayerReveal();
-  }
-
   void nextPlayerReveal() {
     _isRoleRevealed = false;
     if (_currentPlayerIndex < _players.length - 1) {
@@ -295,16 +315,14 @@ class GameController extends ChangeNotifier {
 
   void acknowledgeElimination() => acknowledgeRoundFeedback();
 
-  void clearEliminationMessage() {
-    _lastEliminationMessageVariant = null;
-    _lastEliminatedPlayer = null;
-    notifyListeners();
-  }
-
   void resetGame() {
     _discussionTimer?.cancel();
     _currentState = GameState.lobby;
-    _players.clear(); // Fix: clear players when returning to lobby
+    for (var player in _players) {
+      player.resetForNewRound();
+    }
+    _currentPlayerIndex = 0;
+    _turnOrder = [];
     _currentWordPair = null;
     _lastEliminationMessageVariant = null;
     _lastEliminatedPlayer = null;
@@ -315,6 +333,11 @@ class GameController extends ChangeNotifier {
 
   void completeOnboarding() {
     _currentState = GameState.lobby;
+    notifyListeners();
+  }
+
+  void openOnboarding() {
+    _currentState = GameState.onboarding;
     notifyListeners();
   }
 

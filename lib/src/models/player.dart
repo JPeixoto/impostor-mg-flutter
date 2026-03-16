@@ -6,14 +6,12 @@ class Player {
   String name;
   Role? role;
   bool isEliminated;
-  int score;
 
   Player({
     required this.name,
     String? id,
     this.role,
     this.isEliminated = false,
-    this.score = 0,
   }) : id = id ?? const Uuid().v4();
 
   void resetForNewRound() {

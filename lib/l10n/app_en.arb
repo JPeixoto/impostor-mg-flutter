@@ -4,8 +4,8 @@
   "settings": "Settings",
   "settingsComingSoon": "Settings screen coming soon.",
   "settingsTitle": "Game Settings",
-  "impostorsLabel": "Impostors (no word)",
-  "mrWhiteLabel": "Mr. White",
+  "impostorsLabel": "Impostors (different word)",
+  "mrWhiteLabel": "Mr. White (no word)",
   "impostorsShort": "Impostors",
   "mrWhiteShort": "Mr White",
   "minPlayersRule": "Need at least {count} civilians.",
@@ -16,7 +16,7 @@
       }
     }
   },
-  "maxSpecialRoles": "With {players} players, max special roles: {count}.",
+  "maxSpecialRoles": "With {players} players, max liars: {count}.",
   "@maxSpecialRoles": {
     "placeholders": {
       "players": {
@@ -27,9 +27,9 @@
       }
     }
   },
-  "invalidSetupWarning": "Add more players or reduce special roles to start.",
-  "hideRolesWhenMrWhiteLabel": "Hide role labels with Mr White",
-  "hideRolesWhenMrWhiteHint": "If enabled, role labels are hidden whenever Mr White is included in the round.",
+  "invalidSetupWarning": "Add more players or reduce liars to start.",
+  "hideRolesWhenMrWhiteLabel": "Hide role identity",
+  "hideRolesWhenMrWhiteHint": "If enabled, players see only word clues and do not see their exact role.",
   "done": "Done",
   "needPlayersToStart": "Add at least {count} players to start.",
   "@needPlayersToStart": {
@@ -57,7 +57,7 @@
   },
   "premiumActive": "Premium Active. Unlimited words.",
   "mrWhite": "Mr. White",
-  "mrWhiteDescription": "Adds an impostor who knows nothing",
+  "mrWhiteDescription": "You get no word.\nListen carefully and bluff.",
   "watchAd": "Watch ad (+4 rounds)",
   "getUnlimited": "Get Unlimited",
   "passThePhone": "Pass the phone to {name}",
@@ -73,15 +73,16 @@
   "civilian": "Civilian",
   "spy": "Impostor",
   "secretWord": "Secret Word",
+  "yourWord": "Your Word",
   "unknown": "Unknown",
   "doneNextPlayer": "Done, Next Player",
   "timeLeft": "Time Left",
   "timeToDiscuss": "Time to discuss",
   "castYourVote": "Cast your vote",
-  "whosTheSpy": "Who's the Impostor?",
+  "whosTheSpy": "Who's suspicious?",
   "voteToEliminate": "Vote to eliminate",
   "civilianWin": "Civilians Win!",
-  "spyWin": "Impostor Wins!",
+  "spyWin": "Liars Win!",
   "playAgain": "Play Again",
   "backToLobby": "Back to Lobby",
   "premium": "Premium",
@@ -148,7 +149,7 @@
   },
   "askQuestion": "Ask a question to another player.",
   "dontLetOthersSee": "Don't let others see the screen!",
-  "askYesNoQuestion": "Ask a yes/no question",
+  "askYesNoQuestion": "Say a word or expression",
   "tapDoneWhenFinished": "Tap Done when finished",
   "keepScreenHidden": "Keep the screen hidden",
   "tapRevealWhenReady": "Tap \"Reveal Role\" when ready",
@@ -164,7 +165,7 @@
   "youAreTheImpostor": "YOU ARE THE IMPOSTOR",
   "youAreACitizen": "YOU ARE A CITIZEN",
   "blendIn": "Blend In",
-  "impostorInstruction": "You don't know the secret word.\nListen carefully and fake it!",
+  "impostorInstruction": "Your word is different from the civilians'.\nBlend in without giving yourself away!",
   "theSecretWord": "The Secret Word",
   "dontBeTooObvious": "Don't be too obvious!",
   "nextUp": "Next Up",
@@ -172,10 +173,10 @@
   "gotIt": "Got it!",
   "busted": "Busted!",
   "innocent": "Innocent!",
-  "youCaughtTheImpostor": "You caught the Impostor!",
+  "youCaughtTheImpostor": "You caught a liar!",
   "youVotedOutInnocent": "You voted out an innocent citizen...",
   "continueGame": "Continue",
-  "spyEvadedDetection": "The impostor evaded detection.",
+  "spyEvadedDetection": "The liars evaded detection.",
   "hiddenThreatEliminated": "The hidden threat has been eliminated.",
   "secretWordWas": "The secret word was",
   "discussionRoom": "Discussion Room",
@@ -189,7 +190,7 @@
   "tapToVoteOut": "Tap to vote out",
   "callAVote": "Call a vote",
   "results": "Results",
-  "onboardingAppName": "IMPOSTOR PARTY",
+  "onboardingAppName": "SOMEONE IS LYING",
   "onboardingTagline": "Pass-and-play deception.",
   "onboardingSkip": "Skip",
   "onboardingSkipTutorial": "Skip tutorial",
@@ -198,13 +199,12 @@
   "onboardingTitle1": "Welcome Agent",
   "onboardingDesc1": "In a room full of civilians, someone is hiding a secret. Can you uncover the truth?",
   "onboardingTitle2": "Civilian vs Impostor",
-  "onboardingDesc2": "Civilians share a secret word. The Impostor doesn't know it. Mr White knows nothing and must bluff.",
+  "onboardingDesc2": "Civilians share a secret word. The Impostor gets a different word. Mr White gets no word and must bluff.",
   "onboardingTitle3": "Trust No One",
-  "onboardingDesc3": "Discuss, vote, and eliminate the Impostor before it's too late.",
+  "onboardingDesc3": "Discuss, vote, and eliminate the liars before it's too late.",
   "onboardingChip1": "Fast rounds",
   "onboardingChip2": "Bluff & deduce",
   "onboardingChip3": "Pass-and-play",
-  "restorePurchases": "Restore Purchases",
   "funFail0": "Oops! {name} was innocent. Your detective skills need work.",
   "@funFail0": {
     "placeholders": {
@@ -217,13 +217,13 @@
       "name": { "type": "String" }
     }
   },
-  "funFail2": "Congratulations! You helped the Impostor by voting out {name}.",
+  "funFail2": "Congratulations! You helped the liars by voting out {name}.",
   "@funFail2": {
     "placeholders": {
       "name": { "type": "String" }
     }
   },
-  "funFail3": "{name} was NOT the impostor. The Impostor is probably laughing right now.",
+  "funFail3": "{name} was NOT a liar. The liars are probably laughing right now.",
   "@funFail3": {
     "placeholders": {
       "name": { "type": "String" }
@@ -259,7 +259,7 @@
       "name": { "type": "String" }
     }
   },
-  "winImpostorsMessage": "Impostors Win! ({names}) outlasted the civilians.",
+  "winImpostorsMessage": "Liars Win! ({names}) outlasted the civilians.",
   "@winImpostorsMessage": {
     "placeholders": {
       "names": { "type": "String" }

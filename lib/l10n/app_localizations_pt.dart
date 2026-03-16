@@ -24,10 +24,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get settingsTitle => 'Definições do Jogo';
 
   @override
-  String get impostorsLabel => 'Impostores (sem palavra)';
+  String get impostorsLabel => 'Impostores (palavra diferente)';
 
   @override
-  String get mrWhiteLabel => 'Mr. White';
+  String get mrWhiteLabel => 'Mr. White (sem palavra)';
 
   @override
   String get impostorsShort => 'Impostores';
@@ -42,17 +42,17 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String maxSpecialRoles(int players, int count) {
-    return 'Com $players jogadores, máximo de papéis especiais: $count.';
+    return 'Com $players jogadores, máximo de mentirosos: $count.';
   }
 
   @override
-  String get invalidSetupWarning => 'Adicione mais jogadores ou reduza os papéis especiais para começar.';
+  String get invalidSetupWarning => 'Adicione mais jogadores ou reduza os mentirosos para começar.';
 
   @override
-  String get hideRolesWhenMrWhiteLabel => 'Ocultar papéis com Mr White';
+  String get hideRolesWhenMrWhiteLabel => 'Ocultar identidade do papel';
 
   @override
-  String get hideRolesWhenMrWhiteHint => 'Se ativo, os rótulos dos papéis ficam ocultos sempre que houver Mr White na ronda.';
+  String get hideRolesWhenMrWhiteHint => 'Se ativo, os jogadores veem apenas pistas de palavra e não veem o papel exato.';
 
   @override
   String get done => 'Concluir';
@@ -98,7 +98,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get mrWhite => 'Mr. White';
 
   @override
-  String get mrWhiteDescription => 'Adiciona um impostor que não sabe nada';
+  String get mrWhiteDescription => 'Não recebes nenhuma palavra.\nOuve com atenção e blefa.';
 
   @override
   String get watchAd => 'Ver anúncio (+4 rondas)';
@@ -127,6 +127,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get secretWord => 'Palavra Secreta';
 
   @override
+  String get yourWord => 'A Tua Palavra';
+
+  @override
   String get unknown => 'Desconhecido';
 
   @override
@@ -142,7 +145,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get castYourVote => 'Votem agora';
 
   @override
-  String get whosTheSpy => 'Quem é o Impostor?';
+  String get whosTheSpy => 'Quem é suspeito?';
 
   @override
   String get voteToEliminate => 'Votar para eliminar';
@@ -151,7 +154,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get civilianWin => 'Civis Ganham!';
 
   @override
-  String get spyWin => 'Impostor Vence!';
+  String get spyWin => 'Mentirosos Vencem!';
 
   @override
   String get playAgain => 'Jogar Novamente';
@@ -238,7 +241,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get dontLetOthersSee => 'Não deixe ninguém ver a tela!';
 
   @override
-  String get askYesNoQuestion => 'Faça uma pergunta de sim/não';
+  String get askYesNoQuestion => 'Diga uma palavra ou expressão';
 
   @override
   String get tapDoneWhenFinished => 'Toque em Pronto ao terminar';
@@ -267,7 +270,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get blendIn => 'Disfarce';
 
   @override
-  String get impostorInstruction => 'Você não sabe a palavra secreta.\nOuça com atenção e finja!';
+  String get impostorInstruction => 'A tua palavra é diferente da dos civis.\nMistura-te sem dar nas vistas!';
 
   @override
   String get theSecretWord => 'A Palavra Secreta';
@@ -291,7 +294,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get innocent => 'Inocente!';
 
   @override
-  String get youCaughtTheImpostor => 'Apanharam o Impostor!';
+  String get youCaughtTheImpostor => 'Apanharam um mentiroso!';
 
   @override
   String get youVotedOutInnocent => 'Expulsaram um cidadão inocente...';
@@ -300,7 +303,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get continueGame => 'Continuar';
 
   @override
-  String get spyEvadedDetection => 'O impostor escapou à deteção.';
+  String get spyEvadedDetection => 'Os mentirosos escaparam à deteção.';
 
   @override
   String get hiddenThreatEliminated => 'A ameaça oculta foi eliminada.';
@@ -342,7 +345,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get results => 'Resultados';
 
   @override
-  String get onboardingAppName => 'FESTA DO IMPOSTOR';
+  String get onboardingAppName => 'ALGUÉM ESTÁ A MENTIR';
 
   @override
   String get onboardingTagline => 'Jogo de engano para passar.';
@@ -369,13 +372,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get onboardingTitle2 => 'Civil vs Impostor';
 
   @override
-  String get onboardingDesc2 => 'Os civis partilham uma palavra secreta. O Impostor não a conhece. O Mr White não sabe nada e tem de blefar.';
+  String get onboardingDesc2 => 'Os civis partilham uma palavra secreta. O Impostor recebe uma palavra diferente. O Mr White não recebe palavra e tem de blefar.';
 
   @override
   String get onboardingTitle3 => 'Não Confies em Ninguém';
 
   @override
-  String get onboardingDesc3 => 'Discute, vota e elimina o Impostor antes que seja tarde demais.';
+  String get onboardingDesc3 => 'Discute, vota e elimina os mentirosos antes que seja tarde demais.';
 
   @override
   String get onboardingChip1 => 'Rondas rápidas';
@@ -385,9 +388,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get onboardingChip3 => 'Passar e jogar';
-
-  @override
-  String get restorePurchases => 'Restaurar Compras';
 
   @override
   String funFail0(String name) {
@@ -401,12 +401,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String funFail2(String name) {
-    return 'Parabéns! Ajudaste o Impostor ao expulsar $name.';
+    return 'Parabéns! Ajudaste os mentirosos ao expulsar $name.';
   }
 
   @override
   String funFail3(String name) {
-    return '$name NÃO era o impostor. O Impostor está provavelmente a rir agora.';
+    return '$name NÃO era um mentiroso. Os mentirosos estão provavelmente a rir agora.';
   }
 
   @override
@@ -436,6 +436,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String winImpostorsMessage(String names) {
-    return 'Os Impostores Vencem! ($names) sobreviveram aos civis.';
+    return 'Os Mentirosos Vencem! ($names) sobreviveram aos civis.';
   }
 }

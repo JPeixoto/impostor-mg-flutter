@@ -6,9 +6,9 @@ A multiplayer social deduction game built with Flutter. Players are assigned rol
 
 -   **Multiplayer Gameplay**: Support for local multiplayer with dynamic player roles.
 -   **Roles**:
-    -   **Civilian**: Knows the secret word. Tries to find the Impostor without revealing the word to Mr. White.
-    -   **Impostor**: Does not know the word. Tries to blend in and guess the word.
-    -   **Mr. White**: Does not know the word. Wins if they can guess the word correctly.
+    -   **Civilian**: Knows the secret word. Tries to find the Impostor without revealing the word.
+    -   **Impostor**: Gets a different word and tries to blend in.
+    -   **Mr. White**: Gets no word and must bluff.
 -   **Game Loop**: Lobby -> Role Reveal -> Turn Taking -> Discussion -> Voting -> Results.
 -   **Monetization**: Integration for AdMob and In-App Purchases (Word Packs).
 -   **Localization**: Supports multiple languages for word packs and UI.

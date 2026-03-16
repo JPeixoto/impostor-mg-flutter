@@ -12,14 +12,14 @@ enum WordCategory {
 class WordPair {
   final String id;
   final String civilianWord;
-  final String mrWhiteWord;
+  final String impostorWord;
   final WordCategory category;
   final String languageCode;
 
   const WordPair({
     required this.id,
     required this.civilianWord,
-    required this.mrWhiteWord,
+    required this.impostorWord,
     required this.category,
     required this.languageCode,
   });

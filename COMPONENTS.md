@@ -34,13 +34,12 @@
 
 ## Localization
 - `lib/l10n/`: Generated localization classes and ARB files.
-- `l10n.yaml`: Localization configuration.
-
-## Assets
-- `assets/images/avatars/`: Avatar imagery used in UI.
 
 ## Tests
 - `test/widget_test.dart`: Basic widget smoke test.
+- `test/game_controller_test.dart`: Game controller unit tests.
+- `test/onboarding_gate_test.dart`: Onboarding persistence tests.
+- `test/theme_contrast_test.dart`: Theme accessibility contrast checks.
 
 ## Platform Targets
 - `android/`, `ios/`, `macos/`, `windows/`, `linux/`, `web/`: Platform project scaffolding.
