@@ -28,6 +28,8 @@
     }
   },
   "invalidSetupWarning": "Adicione mais jogadores ou reduza os papéis especiais para começar.",
+  "hideRolesWhenMrWhiteLabel": "Ocultar papéis com Mr White",
+  "hideRolesWhenMrWhiteHint": "Se ativo, os rótulos dos papéis ficam ocultos sempre que houver Mr White na ronda.",
   "done": "Concluir",
   "needPlayersToStart": "Adicione pelo menos {count} jogadores para começar.",
   "@needPlayersToStart": {
@@ -46,12 +48,26 @@
   "dailyWords": "Palavras Diárias",
   "dailyLimitReached": "Limite diário atingido.",
   "freeRoundsRemaining": "{count} rondas gratuitas.",
+  "@freeRoundsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "premiumActive": "Premium Ativo. Palavras ilimitadas.",
   "mrWhite": "Mr. White",
   "mrWhiteDescription": "Adiciona um impostor que não sabe nada",
   "watchAd": "Ver anúncio (+4 rondas)",
   "getUnlimited": "Obter Ilimitado",
   "passThePhone": "Passa o telemóvel a {name}",
+  "@passThePhone": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "tapToReveal": "Toca para revelar",
   "youAre": "Tu és",
   "civilian": "Civil",
@@ -72,15 +88,64 @@
   "unlimited": "Ilimitado",
   "roundsLeft": "Rondas restantes",
   "theSpyWas": "O Impostor era {name}",
+  "@theSpyWas": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "mrWhiteWas": "Mr. White era {name}",
+  "@mrWhiteWas": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "wordWas": "A palavra era {word}",
+  "@wordWas": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
   "needMoreWords": "Precisas de mais palavras?",
   "watchAdOrPass": "Vê um anúncio para +4 rondas ou compra o passe 24h para jogo ilimitado.",
+  "dayPassFallback": "passe 24h",
+  "adNotCompletedTryAgain": "O anúncio não foi concluído. Tente novamente.",
+  "purchaseStreamError": "O serviço de compras está indisponível. Tente novamente.",
+  "purchaseStoreUnavailable": "A loja está indisponível. Tente novamente mais tarde.",
+  "purchaseStartFailed": "Não foi possível iniciar a compra. Tente novamente.",
+  "purchaseFailed": "A compra falhou.",
+  "purchaseCanceled": "Compra cancelada.",
   "notNow": "Agora não",
   "getPass": "Obter Ilimitado ({price})",
+  "@getPass": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
   "yourTurn": "Sua Vez",
   "itsNamesTurn": "Vez de {name}",
+  "@itsNamesTurn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "passToName": "Passe para {name}",
+  "@passToName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "askQuestion": "Faça uma pergunta a outro jogador.",
   "dontLetOthersSee": "Não deixe ninguém ver a tela!",
   "askYesNoQuestion": "Faça uma pergunta de sim/não",
@@ -88,6 +153,13 @@
   "keepScreenHidden": "Mantenha a tela escondida",
   "tapRevealWhenReady": "Toque em \"Revelar Papel\" quando estiver pronto",
   "iAmNameRevealRole": "Eu sou {name}, Revelar Papel",
+  "@iAmNameRevealRole": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "yourRole": "Seu Papel",
   "youAreTheImpostor": "VOCÊ É O IMPOSTOR",
   "youAreACitizen": "VOCÊ É UM CIDADÃO",
@@ -131,5 +203,66 @@
   "onboardingDesc3": "Discute, vota e elimina o Impostor antes que seja tarde demais.",
   "onboardingChip1": "Rondas rápidas",
   "onboardingChip2": "Bluff e dedução",
-  "onboardingChip3": "Passar e jogar"
+  "onboardingChip3": "Passar e jogar",
+  "restorePurchases": "Restaurar Compras",
+  "funFail0": "Ops! {name} era inocente. As tuas dicas de detetive precisam de melhorar.",
+  "@funFail0": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail1": "Acabaste de eliminar {name}... um civil completamente inocente. Que vergonha.",
+  "@funFail1": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail2": "Parabéns! Ajudaste o Impostor ao expulsar {name}.",
+  "@funFail2": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail3": "{name} NÃO era o impostor. O Impostor está provavelmente a rir agora.",
+  "@funFail3": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail4": "Escolha errada! {name} estava na tua equipa. Não confies em ninguém… especialmente em vós.",
+  "@funFail4": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail5": "Mais um morde o pó. Pena que {name} estava na tua equipa.",
+  "@funFail5": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail6": "Foi neste momento que perceberam… que erraram. ({name} era inocente)",
+  "@funFail6": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail7": "Bola fora! {name} era um civil.",
+  "@funFail7": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "winCiviliansMessage": "Os Civis Ganham! A ameaça oculta ({name}) foi eliminada.",
+  "@winCiviliansMessage": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "winImpostorsMessage": "Os Impostores Vencem! ({names}) sobreviveram aos civis.",
+  "@winImpostorsMessage": {
+    "placeholders": {
+      "names": { "type": "String" }
+    }
+  }
 }

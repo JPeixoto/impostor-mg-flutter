@@ -90,10 +90,16 @@ class AdsService {
 
   String get _rewardedAdUnitId {
     if (Platform.isAndroid) {
+      // TODO(release): Replace with your production Android rewarded ad unit ID.
+      // Format: ca-app-pub-XXXXXXXXXXXXXXXX/NNNNNNNNNN
+      // Current value is Google's public TEST unit ID - DO NOT ship this.
       return 'ca-app-pub-3940256099942544/5224354917';
     }
     if (Platform.isIOS) {
-      return 'ca-app-pub-3940256099942544/1712485313';
+      // TODO(release): Replace with your production iOS rewarded ad unit ID.
+      // Format: ca-app-pub-XXXXXXXXXXXXXXXX/NNNNNNNNNN  (note: slash, not tilde)
+      // The previous value used '~' which is an App ID format, not an Ad Unit ID.
+      return 'ca-app-pub-3940256099942544/5224354917';
     }
     return '';
   }

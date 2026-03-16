@@ -24,10 +24,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsTitle => 'Game Settings';
 
   @override
-  String get impostorsLabel => 'Impostors (no word)';
+  String get impostorsLabel => 'Impostors (different word)';
 
   @override
-  String get mrWhiteLabel => 'Mr. White';
+  String get mrWhiteLabel => 'Mr. White (no word)';
 
   @override
   String get impostorsShort => 'Impostors';
@@ -42,12 +42,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String maxSpecialRoles(int players, int count) {
-    return 'With $players players, max special roles: $count.';
+    return 'With $players players, max liars: $count.';
   }
 
   @override
-  String get invalidSetupWarning =>
-      'Add more players or reduce special roles to start.';
+  String get invalidSetupWarning => 'Add more players or reduce liars to start.';
+
+  @override
+  String get hideRolesWhenMrWhiteLabel => 'Hide role identity';
+
+  @override
+  String get hideRolesWhenMrWhiteHint => 'If enabled, players see only word clues and do not see their exact role.';
 
   @override
   String get done => 'Done';
@@ -93,7 +98,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mrWhite => 'Mr. White';
 
   @override
-  String get mrWhiteDescription => 'Adds an impostor who knows nothing';
+  String get mrWhiteDescription => 'You get no word.\nListen carefully and bluff.';
 
   @override
   String get watchAd => 'Watch ad (+4 rounds)';
@@ -122,6 +127,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get secretWord => 'Secret Word';
 
   @override
+  String get yourWord => 'Your Word';
+
+  @override
   String get unknown => 'Unknown';
 
   @override
@@ -137,7 +145,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get castYourVote => 'Cast your vote';
 
   @override
-  String get whosTheSpy => 'Who\'s the Impostor?';
+  String get whosTheSpy => 'Who\'s suspicious?';
 
   @override
   String get voteToEliminate => 'Vote to eliminate';
@@ -146,7 +154,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get civilianWin => 'Civilians Win!';
 
   @override
-  String get spyWin => 'Impostor Wins!';
+  String get spyWin => 'Liars Win!';
 
   @override
   String get playAgain => 'Play Again';
@@ -182,8 +190,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get needMoreWords => 'Need more words?';
 
   @override
-  String get watchAdOrPass =>
-      'Watch a short ad to get +4 rounds or get the 24h pass for unlimited play.';
+  String get watchAdOrPass => 'Watch a short ad to get +4 rounds or get the 24h pass for unlimited play.';
+
+  @override
+  String get dayPassFallback => '24h pass';
+
+  @override
+  String get adNotCompletedTryAgain => 'Ad was not completed. Try again.';
+
+  @override
+  String get purchaseStreamError => 'Purchase service is unavailable right now. Try again.';
+
+  @override
+  String get purchaseStoreUnavailable => 'Store is unavailable. Try again later.';
+
+  @override
+  String get purchaseStartFailed => 'Unable to start purchase. Try again.';
+
+  @override
+  String get purchaseFailed => 'Purchase failed.';
+
+  @override
+  String get purchaseCanceled => 'Purchase canceled.';
 
   @override
   String get notNow => 'Not now';
@@ -213,7 +241,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dontLetOthersSee => 'Don\'t let others see the screen!';
 
   @override
-  String get askYesNoQuestion => 'Ask a yes/no question';
+  String get askYesNoQuestion => 'Say a word or expression';
 
   @override
   String get tapDoneWhenFinished => 'Tap Done when finished';
@@ -242,8 +270,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get blendIn => 'Blend In';
 
   @override
-  String get impostorInstruction =>
-      'You don\'t know the secret word.\nListen carefully and fake it!';
+  String get impostorInstruction => 'Your word is different from the civilians\'.\nBlend in without giving yourself away!';
 
   @override
   String get theSecretWord => 'The Secret Word';
@@ -267,7 +294,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get innocent => 'Innocent!';
 
   @override
-  String get youCaughtTheImpostor => 'You caught the Impostor!';
+  String get youCaughtTheImpostor => 'You caught a liar!';
 
   @override
   String get youVotedOutInnocent => 'You voted out an innocent citizen...';
@@ -276,7 +303,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueGame => 'Continue';
 
   @override
-  String get spyEvadedDetection => 'The impostor evaded detection.';
+  String get spyEvadedDetection => 'The liars evaded detection.';
 
   @override
   String get hiddenThreatEliminated => 'The hidden threat has been eliminated.';
@@ -318,7 +345,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get results => 'Results';
 
   @override
-  String get onboardingAppName => 'IMPOSTOR PARTY';
+  String get onboardingAppName => 'SOMEONE IS LYING';
 
   @override
   String get onboardingTagline => 'Pass-and-play deception.';
@@ -339,22 +366,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingTitle1 => 'Welcome Agent';
 
   @override
-  String get onboardingDesc1 =>
-      'In a room full of civilians, someone is hiding a secret. Can you uncover the truth?';
+  String get onboardingDesc1 => 'In a room full of civilians, someone is hiding a secret. Can you uncover the truth?';
 
   @override
   String get onboardingTitle2 => 'Civilian vs Impostor';
 
   @override
-  String get onboardingDesc2 =>
-      'Civilians share a secret word. The Impostor doesn\'t know it. Mr White knows nothing and must bluff.';
+  String get onboardingDesc2 => 'Civilians share a secret word. The Impostor gets a different word. Mr White gets no word and must bluff.';
 
   @override
   String get onboardingTitle3 => 'Trust No One';
 
   @override
-  String get onboardingDesc3 =>
-      'Discuss, vote, and eliminate the Impostor before it\'s too late.';
+  String get onboardingDesc3 => 'Discuss, vote, and eliminate the liars before it\'s too late.';
 
   @override
   String get onboardingChip1 => 'Fast rounds';
@@ -364,4 +388,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingChip3 => 'Pass-and-play';
+
+  @override
+  String funFail0(String name) {
+    return 'Oops! $name was innocent. Your detective skills need work.';
+  }
+
+  @override
+  String funFail1(String name) {
+    return 'You just eliminated $name... a totally innocent civilian. Awkward.';
+  }
+
+  @override
+  String funFail2(String name) {
+    return 'Congratulations! You helped the liars by voting out $name.';
+  }
+
+  @override
+  String funFail3(String name) {
+    return '$name was NOT a liar. The liars are probably laughing right now.';
+  }
+
+  @override
+  String funFail4(String name) {
+    return 'Wrong choice! $name was on your team. Trust no one… especially yourselves.';
+  }
+
+  @override
+  String funFail5(String name) {
+    return 'Another one bites the dust. Too bad $name was on your team.';
+  }
+
+  @override
+  String funFail6(String name) {
+    return 'It was at this moment they knew… they messed up. ($name was innocent)';
+  }
+
+  @override
+  String funFail7(String name) {
+    return 'Swing and a miss! $name was a civilian.';
+  }
+
+  @override
+  String winCiviliansMessage(String name) {
+    return 'Civilians Win! The hidden threat ($name) was eliminated.';
+  }
+
+  @override
+  String winImpostorsMessage(String names) {
+    return 'Liars Win! ($names) outlasted the civilians.';
+  }
 }

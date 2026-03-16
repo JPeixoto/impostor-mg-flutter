@@ -162,7 +162,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                         color: theme.cardTheme.color,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: theme.dividerColor.withValues(alpha: 0.1),
+                          color: theme.dividerColor.withValues(alpha: 0.38),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -226,7 +226,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                       borderRadius: AppTheme.cardRadius,
                       boxShadow: AppTheme.softShadows,
                       border: Border.all(
-                        color: theme.dividerColor.withValues(alpha: 0.1),
+                        color: theme.dividerColor.withValues(alpha: 0.38),
                       ),
                     ),
                     child: Column(
@@ -322,9 +322,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                               18,
                                             ),
                                           ),
-                                          child: const Icon(
+                                          child: Icon(
                                             Icons.delete_outline_rounded,
-                                            color: Colors.white,
+                                            color: theme.colorScheme.onError,
                                           ),
                                         ),
                                         child: Container(
@@ -381,7 +381,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                                 ),
                                                 child: Icon(
                                                   _getAvatarIcon(index),
-                                                  color: Colors.white,
+                                                  color: theme
+                                                      .colorScheme
+                                                      .onPrimary,
                                                   size: 20,
                                                 ),
                                               ),
@@ -452,7 +454,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                               suffixIcon: Padding(
                                 padding: const EdgeInsets.all(4),
                                 child: Material(
-                                  color: theme.primaryColor,
+                                  color: theme.colorScheme.primary,
                                   borderRadius: BorderRadius.circular(12),
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(12),
@@ -504,7 +506,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                 ],
                 border: Border(
                   top: BorderSide(
-                    color: theme.dividerColor.withValues(alpha: 0.1),
+                    color: theme.dividerColor.withValues(alpha: 0.38),
                   ),
                 ),
               ),
@@ -512,41 +514,46 @@ class _LobbyScreenState extends State<LobbyScreen> {
                 height: bottomBarHeight - 28,
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: hasValidSetup
-                      ? () {
-                          if (!monetization.canPlay) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(loc.dailyLimitReached)),
-                            );
-                            showModalBottomSheet<bool>(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (ctx) => const _UnlockWordsSheet(),
-                            );
-                            return;
-                          }
-                          controller.startGame(context);
-                        }
-                      : null,
+                  onPressed: () {
+                    if (!hasValidSetup) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            loc.needPlayersToStart(controller.minPlayersRequired),
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+                    if (!monetization.canPlay) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(loc.dailyLimitReached)),
+                      );
+                      showModalBottomSheet<bool>(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (ctx) => const _UnlockWordsSheet(),
+                      );
+                      return;
+                    }
+                    controller.startGame(context);
+                  },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.primaryColor,
-                    disabledBackgroundColor: theme.disabledColor.withValues(
-                      alpha: 0.1,
-                    ),
+                    backgroundColor: theme.colorScheme.primary,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    elevation: hasValidSetup ? 6 : 0,
-                    shadowColor: theme.primaryColor.withValues(alpha: 0.4),
+                    elevation: 6,
+                    shadowColor: theme.colorScheme.primary.withValues(
+                      alpha: 0.4,
+                    ),
                   ),
                   child: Text(
                     loc.startGame,
                     style: textTheme.titleSmall?.copyWith(
-                      color: hasValidSetup
-                          ? theme.colorScheme.onPrimary
-                          : theme.disabledColor,
+                      color: theme.colorScheme.onPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -651,7 +658,7 @@ class _WordPackStatusCard extends StatelessWidget {
                     ),
                     child: Icon(
                       Icons.bolt_rounded,
-                      color: Colors.white,
+                      color: theme.colorScheme.onPrimary,
                       size: 20,
                     ),
                   ),
@@ -768,9 +775,33 @@ class _UnlockWordsSheetState extends State<_UnlockWordsSheet> {
   bool _isWorking = false;
   String? _localError;
 
+  String? _resolvePurchaseErrorMessage(
+    AppLocalizations loc,
+    String? purchaseError,
+  ) {
+    switch (purchaseError) {
+      case MonetizationController.purchaseErrorStream:
+        return loc.purchaseStreamError;
+      case MonetizationController.purchaseErrorStoreUnavailable:
+        return loc.purchaseStoreUnavailable;
+      case MonetizationController.purchaseErrorStartFailed:
+        return loc.purchaseStartFailed;
+      case MonetizationController.purchaseErrorFailed:
+        return loc.purchaseFailed;
+      case MonetizationController.purchaseErrorCanceled:
+        return loc.purchaseCanceled;
+      default:
+        return purchaseError;
+    }
+  }
+
   Future<void> _watchAd(MonetizationController monetization) async {
     if (_isWorking) return;
-    setState(() => _isWorking = true);
+    final loc = AppLocalizations.of(context)!;
+    setState(() {
+      _isWorking = true;
+      _localError = null;
+    });
     final success = await monetization.unlockMoreWordsWithAd();
     if (!mounted) return;
     if (success) {
@@ -779,23 +810,41 @@ class _UnlockWordsSheetState extends State<_UnlockWordsSheet> {
     }
     setState(() {
       _isWorking = false;
-      _localError = 'Ad was not completed. Try again.';
+      _localError = loc.adNotCompletedTryAgain;
     });
   }
 
   Future<void> _buyPass(MonetizationController monetization) async {
     if (_isWorking) return;
-    setState(() => _isWorking = true);
+    final loc = AppLocalizations.of(context)!;
+    setState(() {
+      _isWorking = true;
+      _localError = null;
+    });
     monetization.clearPurchaseError();
     final success = await monetization.purchaseDayPass();
     if (!mounted) return;
     if (!success) {
       setState(() {
         _isWorking = false;
-        _localError = monetization.purchaseError;
+        _localError = _resolvePurchaseErrorMessage(
+          loc,
+          monetization.purchaseError,
+        );
       });
       return;
     }
+    setState(() => _isWorking = false);
+  }
+
+  Future<void> _restorePurchases(MonetizationController monetization) async {
+    if (_isWorking) return;
+    setState(() {
+      _isWorking = true;
+      _localError = null;
+    });
+    await monetization.restorePurchases();
+    if (!mounted) return;
     setState(() => _isWorking = false);
   }
 
@@ -806,7 +855,7 @@ class _UnlockWordsSheetState extends State<_UnlockWordsSheet> {
     final textTheme = theme.textTheme;
     final loc = AppLocalizations.of(context)!;
 
-    final priceLabel = monetization.passProduct?.price ?? '24h pass';
+    final priceLabel = monetization.passProduct?.price ?? loc.dayPassFallback;
 
     if (monetization.hasActivePass) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -814,7 +863,9 @@ class _UnlockWordsSheetState extends State<_UnlockWordsSheet> {
       });
     }
 
-    final errorMessage = _localError ?? monetization.purchaseError;
+    final errorMessage =
+        _localError ??
+        _resolvePurchaseErrorMessage(loc, monetization.purchaseError);
     final isBusy = _isWorking || monetization.isPurchasePending;
 
     return Padding(
@@ -824,7 +875,7 @@ class _UnlockWordsSheetState extends State<_UnlockWordsSheet> {
         decoration: BoxDecoration(
           color: theme.cardTheme.color,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: theme.dividerColor.withValues(alpha: 0.1)),
+          border: Border.all(color: theme.dividerColor.withValues(alpha: 0.38)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.2),
@@ -895,6 +946,15 @@ class _UnlockWordsSheetState extends State<_UnlockWordsSheet> {
             TextButton(
               onPressed: isBusy ? null : () => Navigator.of(context).pop(false),
               child: Text(loc.notNow),
+            ),
+            TextButton(
+              onPressed: isBusy ? null : () => _restorePurchases(monetization),
+              child: Text(
+                loc.restorePurchases,
+                style: textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
             ),
           ],
         ),

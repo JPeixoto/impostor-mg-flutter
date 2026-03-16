@@ -5,14 +5,16 @@ import 'game_controller.dart';
 import 'features/settings/settings_controller.dart';
 import 'main_screen.dart';
 import 'monetization/monetization_controller.dart';
+import 'models/game_state.dart';
 
 import 'core/theme.dart';
 
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:my_app/l10n/app_localizations.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.initialGameState});
+
+  final GameState initialGameState;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +25,10 @@ class MyApp extends StatelessWidget {
           create: (_) => SettingsController()..loadSettings(),
         ),
         ChangeNotifierProxyProvider<MonetizationController, GameController>(
-          create: (_) => GameController(),
+          create: (_) => GameController(initialState: initialGameState),
           update: (_, monetization, controller) {
-            final gameController = controller ?? GameController();
+            final gameController =
+                controller ?? GameController(initialState: initialGameState);
             gameController.updateMonetization(monetization);
             return gameController;
           },
@@ -39,16 +42,8 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: settings.themeMode,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('en'), // English
-              Locale('pt'), // Portuguese
-            ],
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
             home: const MainScreen(),
           );
         },

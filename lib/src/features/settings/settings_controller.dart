@@ -4,13 +4,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsController with ChangeNotifier {
   static const String _themeKey = 'theme_mode';
   ThemeMode _themeMode = ThemeMode.system;
+  SharedPreferences? _prefs;
 
   ThemeMode get themeMode => _themeMode;
 
   Future<void> loadSettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    final themeIndex = prefs.getInt(_themeKey);
-    if (themeIndex != null) {
+    _prefs = await SharedPreferences.getInstance();
+    final themeIndex = _prefs!.getInt(_themeKey);
+    if (themeIndex != null &&
+        themeIndex >= 0 &&
+        themeIndex < ThemeMode.values.length) {
       _themeMode = ThemeMode.values[themeIndex];
       notifyListeners();
     }
@@ -23,7 +26,7 @@ class SettingsController with ChangeNotifier {
     _themeMode = newThemeMode;
     notifyListeners();
 
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = _prefs ?? await SharedPreferences.getInstance();
     await prefs.setInt(_themeKey, newThemeMode.index);
   }
 }

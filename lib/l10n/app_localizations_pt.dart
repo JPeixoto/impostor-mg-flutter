@@ -46,8 +46,13 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get invalidSetupWarning =>
-      'Adicione mais jogadores ou reduza os papéis especiais para começar.';
+  String get invalidSetupWarning => 'Adicione mais jogadores ou reduza os papéis especiais para começar.';
+
+  @override
+  String get hideRolesWhenMrWhiteLabel => 'Ocultar papéis com Mr White';
+
+  @override
+  String get hideRolesWhenMrWhiteHint => 'Se ativo, os rótulos dos papéis ficam ocultos sempre que houver Mr White na ronda.';
 
   @override
   String get done => 'Concluir';
@@ -67,8 +72,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get leaveGameMessage => 'Isto termina a ronda atual.';
 
   @override
-  String get waitingForPlayers =>
-      'Adicione pelo menos 3 jogadores para começar.';
+  String get waitingForPlayers => 'Adicione pelo menos 3 jogadores para começar.';
 
   @override
   String get enterPlayerName => 'Insira o nome';
@@ -183,8 +187,28 @@ class AppLocalizationsPt extends AppLocalizations {
   String get needMoreWords => 'Precisas de mais palavras?';
 
   @override
-  String get watchAdOrPass =>
-      'Vê um anúncio para +4 rondas ou compra o passe 24h para jogo ilimitado.';
+  String get watchAdOrPass => 'Vê um anúncio para +4 rondas ou compra o passe 24h para jogo ilimitado.';
+
+  @override
+  String get dayPassFallback => 'passe 24h';
+
+  @override
+  String get adNotCompletedTryAgain => 'O anúncio não foi concluído. Tente novamente.';
+
+  @override
+  String get purchaseStreamError => 'O serviço de compras está indisponível. Tente novamente.';
+
+  @override
+  String get purchaseStoreUnavailable => 'A loja está indisponível. Tente novamente mais tarde.';
+
+  @override
+  String get purchaseStartFailed => 'Não foi possível iniciar a compra. Tente novamente.';
+
+  @override
+  String get purchaseFailed => 'A compra falhou.';
+
+  @override
+  String get purchaseCanceled => 'Compra cancelada.';
 
   @override
   String get notNow => 'Agora não';
@@ -223,8 +247,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get keepScreenHidden => 'Mantenha a tela escondida';
 
   @override
-  String get tapRevealWhenReady =>
-      'Toque em \"Revelar Papel\" quando estiver pronto';
+  String get tapRevealWhenReady => 'Toque em \"Revelar Papel\" quando estiver pronto';
 
   @override
   String iAmNameRevealRole(String name) {
@@ -244,8 +267,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get blendIn => 'Disfarce';
 
   @override
-  String get impostorInstruction =>
-      'Você não sabe a palavra secreta.\nOuça com atenção e finja!';
+  String get impostorInstruction => 'Você não sabe a palavra secreta.\nOuça com atenção e finja!';
 
   @override
   String get theSecretWord => 'A Palavra Secreta';
@@ -257,8 +279,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get nextUp => 'Próximo';
 
   @override
-  String get passDeviceInstruction =>
-      'Passe o dispositivo para o próximo jogador';
+  String get passDeviceInstruction => 'Passe o dispositivo para o próximo jogador';
 
   @override
   String get gotIt => 'Entendi!';
@@ -342,22 +363,19 @@ class AppLocalizationsPt extends AppLocalizations {
   String get onboardingTitle1 => 'Bem-vindo Agente';
 
   @override
-  String get onboardingDesc1 =>
-      'Numa sala cheia de civis, alguém esconde um segredo. Consegues descobrir a verdade?';
+  String get onboardingDesc1 => 'Numa sala cheia de civis, alguém esconde um segredo. Consegues descobrir a verdade?';
 
   @override
   String get onboardingTitle2 => 'Civil vs Impostor';
 
   @override
-  String get onboardingDesc2 =>
-      'Os civis partilham uma palavra secreta. O Impostor não a conhece. O Mr White não sabe nada e tem de blefar.';
+  String get onboardingDesc2 => 'Os civis partilham uma palavra secreta. O Impostor não a conhece. O Mr White não sabe nada e tem de blefar.';
 
   @override
   String get onboardingTitle3 => 'Não Confies em Ninguém';
 
   @override
-  String get onboardingDesc3 =>
-      'Discute, vota e elimina o Impostor antes que seja tarde demais.';
+  String get onboardingDesc3 => 'Discute, vota e elimina o Impostor antes que seja tarde demais.';
 
   @override
   String get onboardingChip1 => 'Rondas rápidas';
@@ -367,4 +385,57 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get onboardingChip3 => 'Passar e jogar';
+
+  @override
+  String get restorePurchases => 'Restaurar Compras';
+
+  @override
+  String funFail0(String name) {
+    return 'Ops! $name era inocente. As tuas dicas de detetive precisam de melhorar.';
+  }
+
+  @override
+  String funFail1(String name) {
+    return 'Acabaste de eliminar $name... um civil completamente inocente. Que vergonha.';
+  }
+
+  @override
+  String funFail2(String name) {
+    return 'Parabéns! Ajudaste o Impostor ao expulsar $name.';
+  }
+
+  @override
+  String funFail3(String name) {
+    return '$name NÃO era o impostor. O Impostor está provavelmente a rir agora.';
+  }
+
+  @override
+  String funFail4(String name) {
+    return 'Escolha errada! $name estava na tua equipa. Não confies em ninguém… especialmente em vós.';
+  }
+
+  @override
+  String funFail5(String name) {
+    return 'Mais um morde o pó. Pena que $name estava na tua equipa.';
+  }
+
+  @override
+  String funFail6(String name) {
+    return 'Foi neste momento que perceberam… que erraram. ($name era inocente)';
+  }
+
+  @override
+  String funFail7(String name) {
+    return 'Bola fora! $name era um civil.';
+  }
+
+  @override
+  String winCiviliansMessage(String name) {
+    return 'Os Civis Ganham! A ameaça oculta ($name) foi eliminada.';
+  }
+
+  @override
+  String winImpostorsMessage(String names) {
+    return 'Os Impostores Vencem! ($names) sobreviveram aos civis.';
+  }
 }

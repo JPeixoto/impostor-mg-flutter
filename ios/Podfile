@@ -43,4 +43,17 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]'] = 'NO'
     end
   end
+
+  # Strip macOS extended attributes (resource forks) from build output to
+  # prevent codesign failures when building from an external volume.
+  installer.generated_projects.each do |project|
+    project.targets.each do |target|
+      next unless target.name == 'Runner'
+      phase = target.new_shell_script_build_phase('Strip Extended Attributes')
+      phase.shell_script = 'find "${BUILT_PRODUCTS_DIR}" -name "*.framework" -exec xattr -cr {} \\;'
+      phase.run_only_for_deployment_postprocessing = '0'
+      # Move phase to run before code signing (index 0)
+      target.build_phases.move(phase, 0)
+    end
+  end
 end

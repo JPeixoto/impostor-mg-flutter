@@ -15,7 +15,7 @@ class RoundFeedbackScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<GameController>();
     final eliminatedPlayer = controller.lastEliminatedPlayer;
-    final feedbackMessage = controller.lastEliminationMessage;
+    final feedbackVariant = controller.lastEliminationMessageVariant;
     final wasSpy =
         eliminatedPlayer?.role == Role.impostor ||
         eliminatedPlayer?.role == Role.mrWhite;
@@ -53,7 +53,7 @@ class RoundFeedbackScreen extends StatelessWidget {
                     borderRadius: AppTheme.cardRadius,
                     boxShadow: AppTheme.softShadows,
                     border: Border.all(
-                      color: theme.dividerColor.withValues(alpha: 0.1),
+                      color: theme.dividerColor.withValues(alpha: 0.38),
                     ),
                   ),
                   child: Column(
@@ -80,7 +80,11 @@ class RoundFeedbackScreen extends StatelessWidget {
                       Text(
                         wasSpy
                             ? loc.youCaughtTheImpostor
-                            : (feedbackMessage ?? loc.youVotedOutInnocent),
+                            : _feedbackMessage(
+                                loc,
+                                feedbackVariant,
+                                eliminatedPlayer?.name,
+                              ),
                         style: textTheme.titleLarge?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                           height: 1.3,
@@ -117,9 +121,11 @@ class RoundFeedbackScreen extends StatelessWidget {
                     onPressed: controller.acknowledgeElimination,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 20),
-                      backgroundColor: AppTheme.primary,
-                      foregroundColor: Colors.white,
-                      shadowColor: AppTheme.primary.withValues(alpha: 0.5),
+                      backgroundColor: theme.colorScheme.primary,
+                      foregroundColor: theme.colorScheme.onPrimary,
+                      shadowColor: theme.colorScheme.primary.withValues(
+                        alpha: 0.5,
+                      ),
                       elevation: 8,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
@@ -129,7 +135,7 @@ class RoundFeedbackScreen extends StatelessWidget {
                       loc.continueGame,
                       style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: theme.colorScheme.onPrimary,
                       ),
                     ),
                   ),
@@ -141,5 +147,37 @@ class RoundFeedbackScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _feedbackMessage(
+    AppLocalizations loc,
+    int? variant,
+    String? eliminatedPlayerName,
+  ) {
+    final name = eliminatedPlayerName;
+    if (name == null || name.isEmpty || variant == null) {
+      return loc.youVotedOutInnocent;
+    }
+
+    switch (variant) {
+      case 0:
+        return loc.funFail0(name);
+      case 1:
+        return loc.funFail1(name);
+      case 2:
+        return loc.funFail2(name);
+      case 3:
+        return loc.funFail3(name);
+      case 4:
+        return loc.funFail4(name);
+      case 5:
+        return loc.funFail5(name);
+      case 6:
+        return loc.funFail6(name);
+      case 7:
+        return loc.funFail7(name);
+      default:
+        return loc.youVotedOutInnocent;
+    }
   }
 }

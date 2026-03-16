@@ -28,6 +28,8 @@
     }
   },
   "invalidSetupWarning": "Add more players or reduce special roles to start.",
+  "hideRolesWhenMrWhiteLabel": "Hide role labels with Mr White",
+  "hideRolesWhenMrWhiteHint": "If enabled, role labels are hidden whenever Mr White is included in the round.",
   "done": "Done",
   "needPlayersToStart": "Add at least {count} players to start.",
   "@needPlayersToStart": {
@@ -111,6 +113,13 @@
   },
   "needMoreWords": "Need more words?",
   "watchAdOrPass": "Watch a short ad to get +4 rounds or get the 24h pass for unlimited play.",
+  "dayPassFallback": "24h pass",
+  "adNotCompletedTryAgain": "Ad was not completed. Try again.",
+  "purchaseStreamError": "Purchase service is unavailable right now. Try again.",
+  "purchaseStoreUnavailable": "Store is unavailable. Try again later.",
+  "purchaseStartFailed": "Unable to start purchase. Try again.",
+  "purchaseFailed": "Purchase failed.",
+  "purchaseCanceled": "Purchase canceled.",
   "notNow": "Not now",
   "getPass": "Get Unlimited ({price})",
   "@getPass": {
@@ -194,5 +203,66 @@
   "onboardingDesc3": "Discuss, vote, and eliminate the Impostor before it's too late.",
   "onboardingChip1": "Fast rounds",
   "onboardingChip2": "Bluff & deduce",
-  "onboardingChip3": "Pass-and-play"
+  "onboardingChip3": "Pass-and-play",
+  "restorePurchases": "Restore Purchases",
+  "funFail0": "Oops! {name} was innocent. Your detective skills need work.",
+  "@funFail0": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail1": "You just eliminated {name}... a totally innocent civilian. Awkward.",
+  "@funFail1": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail2": "Congratulations! You helped the Impostor by voting out {name}.",
+  "@funFail2": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail3": "{name} was NOT the impostor. The Impostor is probably laughing right now.",
+  "@funFail3": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail4": "Wrong choice! {name} was on your team. Trust no one… especially yourselves.",
+  "@funFail4": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail5": "Another one bites the dust. Too bad {name} was on your team.",
+  "@funFail5": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail6": "It was at this moment they knew… they messed up. ({name} was innocent)",
+  "@funFail6": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "funFail7": "Swing and a miss! {name} was a civilian.",
+  "@funFail7": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "winCiviliansMessage": "Civilians Win! The hidden threat ({name}) was eliminated.",
+  "@winCiviliansMessage": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "winImpostorsMessage": "Impostors Win! ({names}) outlasted the civilians.",
+  "@winImpostorsMessage": {
+    "placeholders": {
+      "names": { "type": "String" }
+    }
+  }
 }

@@ -354,7 +354,7 @@ class _VotingList extends StatelessWidget {
                       child: Text(
                         initial,
                         style: textTheme.titleLarge?.copyWith(
-                          color: Colors.white, // Always white on secondary
+                          color: theme.colorScheme.onSecondary,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
@@ -391,7 +391,7 @@ class _VotingList extends StatelessWidget {
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                      color: AppTheme.primary.withValues(alpha: 0.1),
+                      color: theme.colorScheme.primary.withValues(alpha: 0.14),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -399,14 +399,14 @@ class _VotingList extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.how_to_vote_rounded,
-                          color: AppTheme.primary,
+                          color: theme.colorScheme.primary,
                           size: 20,
                         ),
                         const SizedBox(width: 8),
                         Text(
                           loc.vote.toUpperCase(),
                           style: GoogleFonts.sora(
-                            color: AppTheme.primary,
+                            color: theme.colorScheme.primary,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 1.2,
                             fontSize: 12,

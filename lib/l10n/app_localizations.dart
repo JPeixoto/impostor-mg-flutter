@@ -62,8 +62,7 @@ import 'app_localizations_pt.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,18 +82,17 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('pt'),
+    Locale('pt')
   ];
 
   /// No description provided for @lobbyTitle.
@@ -169,6 +166,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add more players or reduce special roles to start.'**
   String get invalidSetupWarning;
+
+  /// No description provided for @hideRolesWhenMrWhiteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide role labels with Mr White'**
+  String get hideRolesWhenMrWhiteLabel;
+
+  /// No description provided for @hideRolesWhenMrWhiteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'If enabled, role labels are hidden whenever Mr White is included in the round.'**
+  String get hideRolesWhenMrWhiteHint;
 
   /// No description provided for @done.
   ///
@@ -415,6 +424,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Watch a short ad to get +4 rounds or get the 24h pass for unlimited play.'**
   String get watchAdOrPass;
+
+  /// No description provided for @dayPassFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'24h pass'**
+  String get dayPassFallback;
+
+  /// No description provided for @adNotCompletedTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad was not completed. Try again.'**
+  String get adNotCompletedTryAgain;
+
+  /// No description provided for @purchaseStreamError.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase service is unavailable right now. Try again.'**
+  String get purchaseStreamError;
+
+  /// No description provided for @purchaseStoreUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Store is unavailable. Try again later.'**
+  String get purchaseStoreUnavailable;
+
+  /// No description provided for @purchaseStartFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to start purchase. Try again.'**
+  String get purchaseStartFailed;
+
+  /// No description provided for @purchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed.'**
+  String get purchaseFailed;
+
+  /// No description provided for @purchaseCanceled.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase canceled.'**
+  String get purchaseCanceled;
 
   /// No description provided for @notNow.
   ///
@@ -751,10 +802,75 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pass-and-play'**
   String get onboardingChip3;
+
+  /// No description provided for @restorePurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchases'**
+  String get restorePurchases;
+
+  /// No description provided for @funFail0.
+  ///
+  /// In en, this message translates to:
+  /// **'Oops! {name} was innocent. Your detective skills need work.'**
+  String funFail0(String name);
+
+  /// No description provided for @funFail1.
+  ///
+  /// In en, this message translates to:
+  /// **'You just eliminated {name}... a totally innocent civilian. Awkward.'**
+  String funFail1(String name);
+
+  /// No description provided for @funFail2.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations! You helped the Impostor by voting out {name}.'**
+  String funFail2(String name);
+
+  /// No description provided for @funFail3.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} was NOT the impostor. The Impostor is probably laughing right now.'**
+  String funFail3(String name);
+
+  /// No description provided for @funFail4.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong choice! {name} was on your team. Trust no one… especially yourselves.'**
+  String funFail4(String name);
+
+  /// No description provided for @funFail5.
+  ///
+  /// In en, this message translates to:
+  /// **'Another one bites the dust. Too bad {name} was on your team.'**
+  String funFail5(String name);
+
+  /// No description provided for @funFail6.
+  ///
+  /// In en, this message translates to:
+  /// **'It was at this moment they knew… they messed up. ({name} was innocent)'**
+  String funFail6(String name);
+
+  /// No description provided for @funFail7.
+  ///
+  /// In en, this message translates to:
+  /// **'Swing and a miss! {name} was a civilian.'**
+  String funFail7(String name);
+
+  /// No description provided for @winCiviliansMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Civilians Win! The hidden threat ({name}) was eliminated.'**
+  String winCiviliansMessage(String name);
+
+  /// No description provided for @winImpostorsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Impostors Win! ({names}) outlasted the civilians.'**
+  String winImpostorsMessage(String names);
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -763,26 +879,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'pt'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['en', 'pt'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en':
-      return AppLocalizationsEn();
-    case 'pt':
-      return AppLocalizationsPt();
+    case 'en': return AppLocalizationsEn();
+    case 'pt': return AppLocalizationsPt();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }

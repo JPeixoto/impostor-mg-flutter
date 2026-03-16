@@ -4,6 +4,7 @@ import '../../core/grid_background.dart';
 import '../../game_controller.dart';
 import '../../core/confirm_exit.dart';
 import '../../core/theme.dart';
+import '../../models/winner_type.dart';
 
 import 'package:my_app/l10n/app_localizations.dart';
 
@@ -13,8 +14,8 @@ class ResultsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<GameController>();
-    final winner = controller.winner; // 'citizens' or 'spy'
-    final isSpyWin = winner == 'spy';
+    final winner = controller.winner;
+    final isSpyWin = winner == WinnerType.spy;
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final loc = AppLocalizations.of(context)!;

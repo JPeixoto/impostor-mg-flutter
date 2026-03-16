@@ -22,7 +22,6 @@ class _TurnScreenState extends State<TurnScreen> {
     final player = controller.currentPlayer;
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    // final isDark = theme.brightness == Brightness.dark; // Unused
     final loc = AppLocalizations.of(context)!;
 
     if (player == null) {
@@ -37,11 +36,15 @@ class _TurnScreenState extends State<TurnScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(
-          (isTurnTaking ? loc.yourTurn : loc.passThePhone(name)).toUpperCase(),
-          style: textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1,
+        title: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            (isTurnTaking ? loc.yourTurn : loc.passThePhone(name))
+                .toUpperCase(),
+            style: textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1,
+            ),
           ),
         ),
         centerTitle: true,
@@ -59,157 +62,193 @@ class _TurnScreenState extends State<TurnScreen> {
       ),
       body: GridBackground(
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 140,
-                  width: 140,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.secondary,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: theme.scaffoldBackgroundColor,
-                      width: 4,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                        blurRadius: 20,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      initial,
-                      style: GoogleFonts.sora(
-                        fontSize: 64,
-                        color: Colors.white, // Always white on secondary
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                Text(
-                  isTurnTaking ? loc.itsNamesTurn(name) : loc.passToName(name),
-                  style: textTheme.displayMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: -1,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  isTurnTaking ? loc.askQuestion : loc.dontLetOthersSee,
-                  style: textTheme.bodyLarge?.copyWith(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 48),
-                Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    borderRadius: AppTheme.cardRadius,
-                    boxShadow: AppTheme.softShadows,
-                    border: Border.all(
-                      color: theme.dividerColor.withValues(alpha: 0.2),
-                      width: 1,
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      if (isTurnTaking) ...[
-                        _InstructionRow(
-                          icon: Icons.record_voice_over_rounded,
-                          text: loc.askYesNoQuestion,
-                          color: theme.colorScheme.primary,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Divider(
-                            height: 1,
-                            color: theme.dividerColor.withValues(alpha: 0.2),
-                          ),
-                        ),
-                        _InstructionRow(
-                          icon: Icons.check_circle_rounded,
-                          text: loc.tapDoneWhenFinished,
-                          color: theme.colorScheme.secondary,
-                        ),
-                      ] else ...[
-                        _InstructionRow(
-                          icon: Icons.visibility_off_rounded,
-                          text: loc.keepScreenHidden,
-                          color: theme.colorScheme.primary,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Divider(
-                            height: 1,
-                            color: theme.dividerColor.withValues(alpha: 0.2),
-                          ),
-                        ),
-                        _InstructionRow(
-                          icon: Icons.touch_app_rounded,
-                          text: loc.tapRevealWhenReady,
-                          color: theme.colorScheme.secondary,
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: isTurnTaking
-                        ? controller.nextTurn
-                        : controller.revealRole,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: theme.colorScheme.onPrimary,
-                      shadowColor: theme.colorScheme.primary.withValues(
-                        alpha: 0.5,
-                      ),
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(
-                          isTurnTaking
-                              ? Icons.check_rounded
-                              : Icons.remove_red_eye_rounded,
-                          size: 22,
+                        const SizedBox(height: 20),
+                        Column(
+                          children: [
+                            Container(
+                              height: 140,
+                              width: 140,
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.secondary,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: theme.scaffoldBackgroundColor,
+                                  width: 4,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: theme.colorScheme.primary.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    blurRadius: 20,
+                                    spreadRadius: 2,
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: Text(
+                                  initial,
+                                  style: GoogleFonts.sora(
+                                    fontSize: 64,
+                                    color: theme.colorScheme.onSecondary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 32),
+                            Text(
+                              isTurnTaking
+                                  ? loc.itsNamesTurn(name)
+                                  : loc.passToName(name),
+                              style: textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: -0.5,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              isTurnTaking
+                                  ? loc.askQuestion
+                                  : loc.dontLetOthersSee,
+                              style: textTheme.bodyLarge?.copyWith(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 48),
+                            Container(
+                              padding: const EdgeInsets.all(24),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.surface,
+                                borderRadius: AppTheme.cardRadius,
+                                boxShadow: AppTheme.softShadows,
+                                border: Border.all(
+                                  color: theme.dividerColor.withValues(
+                                    alpha: 0.2,
+                                  ),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  if (isTurnTaking) ...[
+                                    _InstructionRow(
+                                      icon: Icons.record_voice_over_rounded,
+                                      text: loc.askYesNoQuestion,
+                                      color: theme.colorScheme.primary,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 20,
+                                      ),
+                                      child: Divider(
+                                        height: 1,
+                                        color: theme.dividerColor.withValues(
+                                          alpha: 0.2,
+                                        ),
+                                      ),
+                                    ),
+                                    _InstructionRow(
+                                      icon: Icons.check_circle_rounded,
+                                      text: loc.tapDoneWhenFinished,
+                                      color: theme.colorScheme.secondary,
+                                    ),
+                                  ] else ...[
+                                    _InstructionRow(
+                                      icon: Icons.visibility_off_rounded,
+                                      text: loc.keepScreenHidden,
+                                      color: theme.colorScheme.primary,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 20,
+                                      ),
+                                      child: Divider(
+                                        height: 1,
+                                        color: theme.dividerColor.withValues(
+                                          alpha: 0.2,
+                                        ),
+                                      ),
+                                    ),
+                                    _InstructionRow(
+                                      icon: Icons.touch_app_rounded,
+                                      text: loc.tapRevealWhenReady,
+                                      color: theme.colorScheme.secondary,
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 12),
-                        Text(
-                          isTurnTaking
-                              ? loc.doneNextPlayer
-                              : loc.iAmNameRevealRole(name),
-                          style: textTheme.titleMedium?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 32),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: isTurnTaking
+                                  ? controller.nextTurn
+                                  : controller.revealRole,
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 20,
+                                ),
+                                backgroundColor: theme.colorScheme.primary,
+                                foregroundColor: theme.colorScheme.onPrimary,
+                                shadowColor: theme.colorScheme.primary
+                                    .withValues(alpha: 0.5),
+                                elevation: 8,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    isTurnTaking
+                                        ? Icons.check_rounded
+                                        : Icons.remove_red_eye_rounded,
+                                    size: 22,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Flexible(
+                                    child: Text(
+                                      isTurnTaking
+                                          ? loc.doneNextPlayer
+                                          : loc.iAmNameRevealRole(name),
+                                      style: textTheme.titleMedium?.copyWith(
+                                        color: theme.colorScheme.onPrimary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 32),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),

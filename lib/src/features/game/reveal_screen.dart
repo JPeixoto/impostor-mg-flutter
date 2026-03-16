@@ -17,7 +17,8 @@ class RevealScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final loc = AppLocalizations.of(context)!;
-    final hideRoleLabel = controller.hasMrWhite;
+    final hideRoleLabel =
+        controller.hasMrWhite && controller.hideRolesWhenMrWhite;
 
     if (player == null) {
       return const SizedBox.shrink();
@@ -72,7 +73,7 @@ class RevealScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Spacer(),
+                        const SizedBox(height: 20),
                         Container(
                           width: double.infinity,
                           padding: const EdgeInsets.all(32),
@@ -208,7 +209,7 @@ class RevealScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const Spacer(),
+                        const SizedBox(height: 20),
                         Container(
                           width: double.infinity,
                           padding: const EdgeInsets.all(24),

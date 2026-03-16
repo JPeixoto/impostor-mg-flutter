@@ -83,6 +83,13 @@ class SettingsScreen extends StatelessWidget {
                   playerCount: playerCount,
                 ),
               ),
+              const SizedBox(height: 12),
+              _SettingToggleCard(
+                title: loc.hideRolesWhenMrWhiteLabel,
+                subtitle: loc.hideRolesWhenMrWhiteHint,
+                value: controller.hideRolesWhenMrWhite,
+                onChanged: controller.updateHideRolesWhenMrWhite,
+              ),
               if (!isValidSetup) ...[
                 const SizedBox(height: 16),
                 Container(
@@ -115,6 +122,62 @@ class SettingsScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _SettingToggleCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  const _SettingToggleCard({
+    required this.title,
+    required this.subtitle,
+    required this.value,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.cardTheme.color,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: AppTheme.softShadows,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Switch.adaptive(value: value, onChanged: onChanged),
+        ],
       ),
     );
   }
