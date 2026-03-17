@@ -45,7 +45,7 @@ Do not ship with Google test ad unit ids.
 
 ## 4. In-app purchase configuration
 
-- [ ] Confirm the Android product id in `lib/src/monetization/monetization_controller.dart` is correct: `day_pass_24h`.
+- [ ] Confirm the Android product id in `lib/src/monetization/monetization_controller.dart` is correct: `com.friendsfamilyfungames.someonelying.unlimited24`.
 - [ ] Ensure the product exists in Google Play Console for the same application id.
 - [ ] Verify the product is active and available to the release track being tested.
 - [ ] Test purchase flow on a Play-distributed build, not just a local install.

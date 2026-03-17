@@ -389,8 +389,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboardingChip3 => 'Pass-and-play';
 
-  @override
-  String get restorePurchases => 'Restore Purchases';
 
   @override
   String funFail0(String name) {

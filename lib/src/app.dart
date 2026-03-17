@@ -12,15 +12,22 @@ import 'core/theme.dart';
 import 'package:my_app/l10n/app_localizations.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.initialGameState});
+  const MyApp({
+    super.key,
+    required this.initialGameState,
+    required this.monetizationController,
+  });
 
   final GameState initialGameState;
+  final MonetizationController monetizationController;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => MonetizationController()..init()),
+        ChangeNotifierProvider<MonetizationController>.value(
+          value: monetizationController,
+        ),
         ChangeNotifierProvider(
           create: (_) => SettingsController()..loadSettings(),
         ),

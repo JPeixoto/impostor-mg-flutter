@@ -19,8 +19,8 @@ class MonetizationController extends ChangeNotifier {
   static const String _prefsLastReset = 'last_daily_reset';
   static const String _prefsPassExpiresAt = 'pass_expires_at';
 
-  static const String _androidPassProductId = 'day_pass_24h';
-  static const String _iosPassProductId = 'someonelying_noAdds_24';
+  static const String _androidPassProductId = 'com.friendsfamilyfungames.someonelying.unlimited24';
+  static const String _iosPassProductId = 'com.friendsfamilyfungames.someonelying.unlimited24';
   static const String purchaseErrorStream = 'purchase_error_stream';
   static const String purchaseErrorStoreUnavailable =
       'purchase_error_store_unavailable';
@@ -36,6 +36,7 @@ class MonetizationController extends ChangeNotifier {
 
   bool _isInitialized = false;
   bool _isInitializing = false;
+  bool _isPurchaseStreamStarted = false;
   bool _iapAvailable = false;
   bool _isPurchasePending = false;
   String? _purchaseError;
@@ -68,12 +69,33 @@ class MonetizationController extends ChangeNotifier {
 
   ProductDetails? get passProduct => _passProduct;
 
+  void startPurchaseListener() {
+    if (_isPurchaseStreamStarted || !_supportsInAppPurchases) {
+      return;
+    }
+
+    _purchaseSubscription = _iap.purchaseStream.listen(
+      _onPurchaseUpdated,
+      onDone: () {
+        _isPurchaseStreamStarted = false;
+        _purchaseSubscription?.cancel();
+      },
+      onError: (_) {
+        _isPurchasePending = false;
+        _purchaseError = purchaseErrorStream;
+        notifyListeners();
+      },
+    );
+    _isPurchaseStreamStarted = true;
+  }
+
   Future<void> init() async {
     if (_isInitialized || _isInitializing) {
       return;
     }
     _isInitializing = true;
-    _prefs = await SharedPreferences.getInstance();
+    await _ensurePrefs();
+    startPurchaseListener();
 
     // Load Data
     _seenWordIds = (_prefs?.getStringList(_prefsSeenWords) ?? []).toSet();
@@ -101,18 +123,9 @@ class MonetizationController extends ChangeNotifier {
     _adsService.onRewardedStatusChanged = notifyListeners;
     await _adsService.initialize();
 
-    _iapAvailable = await _iap.isAvailable();
+    _iapAvailable = _supportsInAppPurchases && await _iap.isAvailable();
     if (_iapAvailable) {
       await _queryProducts();
-      _purchaseSubscription = _iap.purchaseStream.listen(
-        _onPurchaseUpdated,
-        onDone: () => _purchaseSubscription?.cancel(),
-        onError: (_) {
-          _isPurchasePending = false;
-          _purchaseError = purchaseErrorStream;
-          notifyListeners();
-        },
-      );
     }
 
     _isInitialized = true;
@@ -227,8 +240,8 @@ class MonetizationController extends ChangeNotifier {
     final purchaseParam = PurchaseParam(productDetails: _passProduct!);
     try {
       if (Platform.isIOS) {
-        // StoreKit consumables must auto-consume on iOS.
-        await _iap.buyConsumable(purchaseParam: purchaseParam);
+        // Apple non-consumables and subscriptions use the non-consumable API.
+        await _iap.buyNonConsumable(purchaseParam: purchaseParam);
       } else {
         // autoConsume: false — we complete the purchase manually only AFTER
         // _activatePass() succeeds, preventing a crash-between-consume-and-
@@ -250,8 +263,15 @@ class MonetizationController extends ChangeNotifier {
   Future<void> _queryProducts() async {
     _passProduct = null;
     final response = await _iap.queryProductDetails({_passProductId});
+    if (response.error != null) {
+      debugPrint(
+        'Failed to query day pass product: ${response.error!.code} ${response.error!.message}',
+      );
+    }
     if (response.notFoundIDs.isNotEmpty) {
-      debugPrint('Day pass product not found: ${response.notFoundIDs.join(", ")}');
+      debugPrint(
+        'Day pass product not found: ${response.notFoundIDs.join(", ")}',
+      );
     }
     if (response.productDetails.isNotEmpty) {
       _passProduct = response.productDetails.first;
@@ -260,6 +280,16 @@ class MonetizationController extends ChangeNotifier {
 
   Future<void> _onPurchaseUpdated(List<PurchaseDetails> purchases) async {
     for (final purchase in purchases) {
+      if (purchase.productID != _passProductId) {
+        debugPrint(
+          'Ignoring unexpected purchase update for ${purchase.productID}',
+        );
+        if (purchase.pendingCompletePurchase) {
+          await _iap.completePurchase(purchase);
+        }
+        continue;
+      }
+
       if (purchase.status == PurchaseStatus.pending) {
         _isPurchasePending = true;
         notifyListeners();
@@ -272,18 +302,10 @@ class MonetizationController extends ChangeNotifier {
         _purchaseError = purchaseMessage?.isNotEmpty == true
             ? purchaseMessage
             : purchaseErrorFailed;
-        notifyListeners();
-        continue;
-      }
-
-      if (purchase.status == PurchaseStatus.canceled) {
+      } else if (purchase.status == PurchaseStatus.canceled) {
         _isPurchasePending = false;
         _purchaseError = purchaseErrorCanceled;
-        notifyListeners();
-        continue;
-      }
-
-      if (purchase.status == PurchaseStatus.purchased ||
+      } else if (purchase.status == PurchaseStatus.purchased ||
           purchase.status == PurchaseStatus.restored) {
         // Activate the pass FIRST, then complete/consume the transaction.
         // This guarantees the user always gets what they paid for even if
@@ -293,12 +315,14 @@ class MonetizationController extends ChangeNotifier {
         _purchaseError = null;
       }
 
-      // Complete the purchase only after activation (autoConsume: false).
+      // Complete failed, cancelled, restored, and purchased transactions so
+      // StoreKit/Play do not leave them unfinished in the queue.
       if (purchase.pendingCompletePurchase) {
         await _iap.completePurchase(purchase);
       }
+
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<void> _activatePass() async {
@@ -316,7 +340,7 @@ class MonetizationController extends ChangeNotifier {
   // Persistence Helpers
 
   Future<void> _persistDailyData() async {
-    if (_prefs == null) return;
+    await _ensurePrefs();
     await _prefs!.setInt(_prefsDailyQuota, _dailyQuota);
     if (_lastDailyReset != null) {
       await _prefs!.setInt(
@@ -327,12 +351,12 @@ class MonetizationController extends ChangeNotifier {
   }
 
   Future<void> _persistSeenWords() async {
-    if (_prefs == null) return;
+    await _ensurePrefs();
     await _prefs!.setStringList(_prefsSeenWords, _seenWordIds.toList());
   }
 
   Future<void> _persistPassExpiry() async {
-    if (_prefs == null) return;
+    await _ensurePrefs();
     if (_passExpiresAt == null) {
       await _prefs!.remove(_prefsPassExpiresAt);
     } else {
@@ -350,9 +374,19 @@ class MonetizationController extends ChangeNotifier {
     return _androidPassProductId;
   }
 
+  bool get _supportsInAppPurchases =>
+      defaultTargetPlatform == TargetPlatform.android ||
+      defaultTargetPlatform == TargetPlatform.iOS ||
+      defaultTargetPlatform == TargetPlatform.macOS;
+
+  Future<void> _ensurePrefs() async {
+    _prefs ??= await SharedPreferences.getInstance();
+  }
+
   @override
   void dispose() {
     _purchaseSubscription?.cancel();
+    _isPurchaseStreamStarted = false;
     _adsService.onRewardedStatusChanged = null;
     _adsService.dispose();
     super.dispose();
