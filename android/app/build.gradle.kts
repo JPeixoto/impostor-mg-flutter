@@ -13,9 +13,10 @@ val configuredApplicationId = (project.findProperty("APP_APPLICATION_ID") as Str
     ?.takeIf { it.isNotBlank() }
     ?: "com.example.my_app"
 
-val debugAdmobAppId = "ca-app-pub-3940256099942544~3347511713"
+val debugFallbackAdmobAppId = "ca-app-pub-3940256099942544~3347511713"
 val releaseAdmobAppId = (project.findProperty("ADMOB_APP_ID_RELEASE") as String?)
     ?.takeIf { it.isNotBlank() }
+val effectiveAdmobAppId = releaseAdmobAppId ?: debugFallbackAdmobAppId
 
 val releaseStoreFile = (project.findProperty("MYAPP_UPLOAD_STORE_FILE") as String?)
     ?.takeIf { it.isNotBlank() }
@@ -75,7 +76,7 @@ android {
 
     defaultConfig {
         applicationId = configuredApplicationId
-        manifestPlaceholders["admobAppId"] = debugAdmobAppId
+        manifestPlaceholders["admobAppId"] = effectiveAdmobAppId
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -86,7 +87,7 @@ android {
 
     buildTypes {
         debug {
-            manifestPlaceholders["admobAppId"] = debugAdmobAppId
+            manifestPlaceholders["admobAppId"] = effectiveAdmobAppId
         }
         release {
             signingConfig = if (hasReleaseSigning) {
@@ -94,7 +95,7 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
-            manifestPlaceholders["admobAppId"] = releaseAdmobAppId ?: debugAdmobAppId
+            manifestPlaceholders["admobAppId"] = effectiveAdmobAppId
         }
     }
 }

@@ -99,7 +99,7 @@ class AdsService {
       // TODO(release): Replace with your production iOS rewarded ad unit ID.
       // Format: ca-app-pub-XXXXXXXXXXXXXXXX/NNNNNNNNNN  (note: slash, not tilde)
       // The previous value used '~' which is an App ID format, not an Ad Unit ID.
-      return 'ca-app-pub-3940256099942544/5224354917';
+      return 'ca-app-pub-4043858315623790/2214434759';
     }
     return '';
   }
